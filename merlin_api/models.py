@@ -40,8 +40,7 @@ class Output(SimObject):
 
 class Entity(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE)
-    attributes = ArrayField(
-        models.ForeignKey(Attribute, on_delete=models.PROTECT))
+    attributes = ArrayField(models.CharField(max_length=30))
     parent = models.ForeignKey('self', on_delete=models.CASCADE)
 
 
@@ -53,14 +52,13 @@ class Connector(SimObject):
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE)
 
-
-class InputConnector(Connector):
-    source = models.ForeignKey(Entity, on_delete=models.SET_NULL)
-    additive_write = models.BooleanField(default=False)
-
-
 class OutputConnector(Connector):
     copy_write = models.BooleanField(default=False)
+
+
+class InputConnector(Connector):
+    source = models.ForeignKey(OutputConnector, null=True, on_delete=models.SET_NULL)
+    additive_write = models.BooleanField(default=False)
 
 
 class Endpoint(models.Model):
