@@ -7,7 +7,8 @@ class SimObject(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=128)
+    description = models.CharField(max_length=255)
 
 
 class Simulation(SimObject):
@@ -42,3 +43,54 @@ class Entity(SimObject):
     attributes = ArrayField(
         models.ForeignKey(Attribute, on_delete=models.PROTECT))
     parent = models.ForeignKey('self', on_delete=models.CASCADE)
+
+
+class Connector(SimObject):
+
+    class Meta(SimObject.Meta):
+        abstract = True
+
+    unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
+    parent = models.ForeignKey(Entity, on_delete=models.CASCADE)
+
+
+class InputConnector(Connector):
+    source = models.ForeignKey(Entity, on_delete=models.SET_NULL)
+    additive_write = models.BooleanField(default=False)
+
+
+class OutputConnector(Connector):
+    copy_write = models.BooleanField(default=False)
+
+
+class Endpoint(models.Model):
+    parent = models.ForeignKey(OutputConnector, on_delete=models.CASCADE)
+    bias = models.FloatField(default=0.0)
+    input = models.ForeignKey(InputConnector, on_delete=models.CASCADE)
+
+
+class Process(SimObject):
+    parent = models.ForeignKey(Entity, on_delete=models.CASCADE)
+    priority = models.PositiveSmallIntegerField(default=0)
+    process_class = models.CharField(max_length=128)
+
+
+class ProcessProperty(SimObject):
+
+    BOOL_TYPE = 1
+    NUMBER_TYPE = 2
+    INT_TYPE = 3
+
+    PROP_TYPE = (
+        (BOOL_TYPE, 'boolean'),
+        (NUMBER_TYPE, 'number'),
+        (INT_TYPE, 'integer')
+    )
+
+    process = models.ForeignKey(Process, on_delete=models.CASCADE)
+    property_type = models.PositiveIntegerField(
+        choices=PROP_TYPE, default=NUMBER_TYPE)
+    default_value = models.FloatField(default=0.0)
+    max_value = models.FloatField(null=True)
+    min_value = models.FloatField(null=True)
+    property_value = models.FloatField()
