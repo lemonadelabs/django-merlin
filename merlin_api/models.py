@@ -41,7 +41,7 @@ class Output(SimObject):
 class Entity(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE)
     attributes = ArrayField(models.CharField(max_length=30))
-    parent = models.ForeignKey('self', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
 
 
 class Connector(SimObject):
@@ -52,19 +52,30 @@ class Connector(SimObject):
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE)
 
+
 class OutputConnector(Connector):
     copy_write = models.BooleanField(default=False)
 
 
 class InputConnector(Connector):
-    source = models.ForeignKey(OutputConnector, null=True, on_delete=models.SET_NULL)
+    source = models.ForeignKey(
+        OutputConnector, null=True, on_delete=models.SET_NULL)
     additive_write = models.BooleanField(default=False)
+
+
+class SimOutputConnector(SimObject):
+    source = models.ForeignKey(
+        OutputConnector, null=True, on_delete=models.SET_NULL)
+    additive_write = models.BooleanField(default=False)
+    unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
+    parent = models.ForeignKey(Output, on_delete=models.CASCADE)
 
 
 class Endpoint(models.Model):
     parent = models.ForeignKey(OutputConnector, on_delete=models.CASCADE)
     bias = models.FloatField(default=0.0)
-    input = models.ForeignKey(InputConnector, on_delete=models.CASCADE)
+    input = models.ForeignKey(InputConnector, null=True, on_delete=models.CASCADE)
+    sim_output = models.ForeignKey(SimOutputConnector, null=True, on_delete=models.CASCADE)
 
 
 class Process(SimObject):
