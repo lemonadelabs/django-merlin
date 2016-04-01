@@ -3,6 +3,11 @@ from merlin_api import models
 
 # An interface between the Django db model and the pymerlin module
 
+def delete_django_sim(sim: models.Simulation) -> None:
+    sim.entity_set.all().delete()
+    sim.output_set.all().delete()
+    sim.delete()
+
 
 def pymerlin2django(sim: merlin.Simulation) -> None:
     """
@@ -53,6 +58,7 @@ def pymerlin2django(sim: merlin.Simulation) -> None:
         dentity.name = e.name
         dentity.sim = dsim
         dentity.attributes = list(e.attributes)
+        dentity.is_source = (e in sim.source_entities)
         dentity.save()
         entity_map[e.id] = dentity
 

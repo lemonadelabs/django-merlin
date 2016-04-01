@@ -42,6 +42,7 @@ class Entity(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE)
     attributes = ArrayField(models.CharField(max_length=30))
     parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE)
+    is_source = models.BooleanField(default=False)
 
 
 class Connector(SimObject):

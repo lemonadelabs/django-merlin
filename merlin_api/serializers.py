@@ -29,7 +29,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
 class EntitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Entity
-        fields = ('description', 'name', 'attributes', 'parent', 'sim')
+        fields = ('description', 'name', 'attributes', 'parent', 'sim', 'is_source')
 
 
 class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
