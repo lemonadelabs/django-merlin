@@ -11,7 +11,8 @@ class UnitTypeRelatedField(serializers.RelatedField):
         return value.value
 
 
-class EndpointSerializer(serializers.HyperlinkedModelSerializer):
+class EndpointSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Endpoint
         fields = ('bias', 'input', 'parent', 'sim_output')
