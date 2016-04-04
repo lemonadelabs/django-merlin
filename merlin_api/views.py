@@ -2,14 +2,6 @@ from rest_framework import viewsets
 from .serializers import *
 from .models import *
 
-# class SimulationModelViewSet(viewsets.ViewSet):
-#
-#     def list(s=elf, request):
-#         pass
-#
-#     def retrieve(self, request, pk=None):
-#         pass
-
 
 class SimulationViewSet(viewsets.ModelViewSet):
     queryset = Simulation.objects.all()

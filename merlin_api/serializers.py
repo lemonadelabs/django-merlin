@@ -25,6 +25,7 @@ class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = OutputConnector
         fields = (
+            'id',
             'description',
             'name',
             'parent',
@@ -40,6 +41,7 @@ class InputConnectorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = InputConnector
         fields = (
+            'id',
             'description',
             'name',
             'parent',
@@ -51,6 +53,7 @@ class ProcessPropertySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProcessProperty
         fields = (
+            'id',
             'description',
             'name',
             'default_value',
@@ -68,6 +71,7 @@ class ProcessSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Process
         fields = (
+            'id',
             'description',
             'name',
             'parent',
@@ -85,6 +89,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Entity
         fields = (
+            'id',
             'description',
             'name',
             'attributes',
@@ -115,7 +120,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Output
-        fields = ('description', 'name', 'sim', 'unit_type')
+        fields = ('id', 'description', 'name', 'sim', 'unit_type')
 
 
 class SimulationSerializer(serializers.HyperlinkedModelSerializer):
@@ -128,6 +133,7 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Simulation
         fields = (
+            'id',
             'description',
             'name',
             'num_steps',
@@ -144,6 +150,7 @@ class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SimOutputConnector
         fields = (
+            'id',
             'description',
             'name',
             'parent',

@@ -3,7 +3,13 @@ from merlin_api import models
 
 # An interface between the Django db model and the pymerlin module
 
+
 def delete_django_sim(sim: models.Simulation) -> None:
+    """
+    Deletes the django simulation model from the
+    database without violating integrity constraints.
+    """
+
     sim.entity_set.all().delete()
     sim.output_set.all().delete()
     sim.delete()
