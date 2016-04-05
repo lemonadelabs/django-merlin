@@ -36,6 +36,8 @@ class Attribute(models.Model):
 class Output(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='outputs')
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
+    display_pos_x = models.FloatField(null=True)
+    display_pos_y = models.FloatField(null=True)
 
 
 class Entity(SimObject):
@@ -43,6 +45,8 @@ class Entity(SimObject):
     attributes = ArrayField(models.CharField(max_length=30))
     parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, related_name='children')
     is_source = models.BooleanField(default=False)
+    display_pos_x = models.FloatField(null=True)
+    display_pos_y = models.FloatField(null=True)
 
 
 class Connector(SimObject):

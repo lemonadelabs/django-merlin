@@ -100,7 +100,9 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'children',
             'outputs',
             'inputs',
-            'processes')
+            'processes',
+            'display_pos_x',
+            'display_pos_y')
 
 
 class UnitTypeSerializer(serializers.HyperlinkedModelSerializer):
