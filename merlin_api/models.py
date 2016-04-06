@@ -57,8 +57,19 @@ class Connector(SimObject):
 
 
 class OutputConnector(Connector):
-    copy_write = models.BooleanField(default=False)
+
+    COPY_WRITE = 1
+    WEIGHTED = 2
+    ABSOLUTE = 3
+
+    APPORTION_RULE = (
+        (COPY_WRITE, 'copy_write'),
+        (WEIGHTED, 'weighted'),
+        (ABSOLUTE, 'absolute')
+    )
+
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='outputs')
+    apportion_rule = models.PositiveIntegerField(choices=APPORTION_RULE, default=WEIGHTED)
 
 
 class InputConnector(Connector):

@@ -31,7 +31,7 @@ class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'parent',
             'unit_type',
-            'copy_write',
+            'apportion_rule',
             'endpoints')
 
 
