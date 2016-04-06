@@ -94,7 +94,7 @@ def pymerlin2django(sim: merlin.Simulation) -> None:
             doutput_con.parent = entity_map[e.id]
             doutput_con.unit_type = ut_map[o.type]
             doutput_con.name = o.name
-            doutput_con.copy_write = o.copy_write
+            doutput_con.apportion_rule = o.apportioning.value
             doutput_con.save()
             output_con_map[o.id] = doutput_con
 
