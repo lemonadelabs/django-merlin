@@ -1,5 +1,5 @@
-from pymerlin import merlin
 from merlin_api import models
+from .merlin_test_processes import *
 
 # An interface between the Django db model and the pymerlin module
 
@@ -13,6 +13,79 @@ def delete_django_sim(sim: models.Simulation) -> None:
     sim.entity_set.all().delete()
     sim.output_set.all().delete()
     sim.delete()
+
+
+def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
+    """
+    Instantiates a merlin.Simulation from a django model sim
+    :type sim: models.Simulation
+    :param sim:
+    :return merlin.Simulation:
+    """
+
+    # Simulation
+    msim = merlin.Simulation()
+    msim.set_time_span(sim.num_steps)
+    msim.name = sim.name
+
+    # Attributes
+    msim.add_attributes([a.value for a in sim.attributes.all()])
+
+    # Unit Types
+    msim.add_unit_types([u.value for u in sim.unittypes.all()])
+
+    # Outputs
+    moutputs = dict()
+    for o in sim.outputs.all():
+        moutput = merlin.Output(o.unit_type, name=o.name)
+        moutputs[o.id] = moutput
+        msim.add_output(moutput)
+
+    # Entities
+    mentities = dict()
+    smentities = list()
+
+    for e in sim.entities.all():
+        mentity = merlin.Entity(
+            msim,
+            name=e.name,
+            attributes=set(e.attributes))
+        if e.is_source:
+            smentities.append(mentity)
+        mentities[e.id] = mentity
+
+    msim.add_entities(mentities.values())
+    msim.set_source_entities(smentities)
+
+    # Sim Connections
+    for e in sim.entities.all():
+        for o in e.outputs.all():
+            for ep in o.endpoints.all():
+                if ep.input is None:
+                    # Connect to an output
+                    msim.connect_output(
+                        mentities[e.id],
+                        moutputs[ep.sim_output.parent.id],
+                        ep.sim_output.additive_write,
+                        merlin.OutputConnector.ApportioningRules(
+                            o.apportion_rule))
+                else:
+                    # Connect to another entity
+                    msim.connect_entities(
+                        mentities[e.id],
+                        mentities[ep.input.parent.id],
+                        o.unit_type,
+                        ep.input.additive_write,
+                        merlin.OutputConnector.ApportioningRules(
+                            o.apportion_rule))
+
+        for p in e.processes.all():
+            mproc_class = globals()[p.process_class]
+            mproc = mproc_class()
+            mproc.priority = p.priority
+            mentities[e.id].add_process(mproc)
+
+    return msim
 
 
 def pymerlin2django(sim: merlin.Simulation) -> None:
