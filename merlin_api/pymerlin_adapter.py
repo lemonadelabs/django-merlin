@@ -1,17 +1,33 @@
+from typing import MutableSequence, Mapping, Any
 from merlin_api import models
+from merlin_api.models import Simulation
 from .merlin_test_processes import *
+from merlin_api import tests
 
 # An interface between the Django db model and the pymerlin module
 
 
-def delete_django_sim(sim: models.Simulation) -> None:
+def run_simulation(
+        sim: models.Simulation) -> MutableSequence[Mapping[str, Any]]:
+    """
+    Runs the supplied simulation and returns the resulting telemetry data
+    :param sim:
+    :return:
+    """
+    msim = django2pymerlin(sim)
+    # msim = tests.create_test_simulation()
+    msim.run()
+    return msim.get_sim_telemetry()
+
+
+def delete_django_sim(sim_id: int) -> None:
     """
     Deletes the django simulation model from the
     database without violating integrity constraints.
     """
-
-    sim.entity_set.all().delete()
-    sim.output_set.all().delete()
+    sim = Simulation.objects.get(pk=sim_id)
+    sim.entities.all().delete()
+    sim.outputs.all().delete()
     sim.delete()
 
 
@@ -37,13 +53,15 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     # Outputs
     moutputs = dict()
     for o in sim.outputs.all():
-        moutput = merlin.Output(o.unit_type, name=o.name)
+        moutput = merlin.Output(o.unit_type.value, name=o.name)
+        moutput.id = o.id
         moutputs[o.id] = moutput
         msim.add_output(moutput)
 
+
     # Entities
-    mentities = dict()
     smentities = list()
+    mentities = dict()
 
     for e in sim.entities.all():
         mentity = merlin.Entity(
@@ -52,6 +70,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
             attributes=set(e.attributes))
         if e.is_source:
             smentities.append(mentity)
+        mentity.id = e.id
         mentities[e.id] = mentity
 
     msim.add_entities(mentities.values())
@@ -61,7 +80,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     for e in sim.entities.all():
         for o in e.outputs.all():
             for ep in o.endpoints.all():
-                if ep.input is None:
+                if ep.input == None:
                     # Connect to an output
                     msim.connect_output(
                         mentities[e.id],
@@ -74,16 +93,52 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                     msim.connect_entities(
                         mentities[e.id],
                         mentities[ep.input.parent.id],
-                        o.unit_type,
+                        o.unit_type.value,
                         ep.input.additive_write,
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
+
+        t_o = len(mentities[e.id].outputs)
 
         for p in e.processes.all():
             mproc_class = globals()[p.process_class]
             mproc = mproc_class()
             mproc.priority = p.priority
+            mproc.id = p.id
+
+            # load in the process property values
+            for pprop in p.properties.all():
+                mpprop = mproc.get_prop(pprop.name)
+                mpprop.id = pprop.id
+                mpprop.max_val = pprop.max_value
+                mpprop.min_val = pprop.min_value
+                mpprop.set_value(pprop.property_value)
+
             mentities[e.id].add_process(mproc)
+
+        t_o2 = len(mentities[e.id].outputs)
+        assert t_o == t_o2
+
+    # rewrite input and output connector ids
+
+    for dso in sim.outputs.all():
+        for di in dso.inputs.all():
+            for i in moutputs[dso.id].inputs:
+                if i.source.parent.id == di.source.parent.id:
+                    i.id = di.id
+
+    for e in sim.entities.all():
+        for o in e.outputs.all():
+            for mout_con in mentities[e.id].outputs:
+                if mout_con.type == o.unit_type.value:
+                    mout_con.id = o.id
+                for ep in o.endpoints.all():
+                    dinput = ep.input
+                    if ep.input:
+                        for mendpoint in mout_con.get_endpoints():
+                            minput = mendpoint[0]
+                            if minput.parent.id == dinput.parent.id:
+                                minput.id = dinput.id
 
     return msim
 
@@ -178,6 +233,7 @@ def pymerlin2django(sim: merlin.Simulation) -> None:
             dinput_con.additive_write = i.additive_write
             dinput_con.name = i.name
             dinput_con.unit_type = ut_map[i.type]
+            dinput_con.source = output_con_map[i.source.id]
             dinput_con.save()
             input_con_map[i.id] = dinput_con
 
@@ -198,6 +254,7 @@ def pymerlin2django(sim: merlin.Simulation) -> None:
                     dendpoint.input = input_con_map[ep[0].id]
                 else:
                     dendpoint.sim_output = input_con_map[ep[0].id]
+
                 dendpoint.save()
 
     # Create Processes

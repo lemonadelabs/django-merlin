@@ -75,10 +75,10 @@ class CallCenterStaffProcess(merlin.Process):
             parent=self)
 
         self.props = {
-            'staff_number': p_staff,
-            'staff_salary': p_staff_salary,
-            'staff_per_desk': p_staff_per_desk,
-            'months_to_train': p_months_to_train}
+            'staff number': p_staff,
+            'staff salary': p_staff_salary,
+            'staff per desk': p_staff_per_desk,
+            'months to train': p_months_to_train}
 
         self.inputs = {'desks': i_desks, '$': i_funds}
         self.outputs = {'requests_handled': o_requests_handled}
@@ -89,13 +89,13 @@ class CallCenterStaffProcess(merlin.Process):
         # reset function as this is called only once at the
         # start of the simualtion run.
         self.desks_required = (
-            self.props['staff_number'].get_value() /
-            self.props['staff_per_desk'].get_value())
+            self.props['staff number'].get_value() /
+            self.props['staff per desk'].get_value())
         self.funds_required = (
-            self.props['staff_number'].get_value() *
-            self.props['staff_salary'].get_value())
-        self.maximal_output = self.props['staff_number'].get_value()
-        self.train_slope = 1.0 / self.props['months_to_train'].get_value()
+            self.props['staff number'].get_value() *
+            self.props['staff salary'].get_value())
+        self.maximal_output = self.props['staff number'].get_value()
+        self.train_slope = 1.0 / self.props['months to train'].get_value()
 
     def compute(self, tick):
         # check requirements
@@ -121,7 +121,7 @@ class CallCenterStaffProcess(merlin.Process):
     def _train_modifier(self, tick):
         # This is just a linear function with the
         # slope steepness = months to train
-        mtt = self.props['months_to_train'].get_value()
+        mtt = self.props['months to train'].get_value()
         train_slope = 1.0 / float(mtt)
         if tick < mtt:
             return tick * train_slope
@@ -153,8 +153,8 @@ class BuildingMaintainenceProcess(merlin.Process):
             parent=self)
 
         self.props = {
-            'cost': p_maintenance_cost,
-            'desks': p_desks_provided}
+            'monthly maintenance cost': p_maintenance_cost,
+            'desks provided': p_desks_provided}
 
         self.inputs = {'$': i_funds}
         self.outputs = {'desks': o_desks}
@@ -166,13 +166,13 @@ class BuildingMaintainenceProcess(merlin.Process):
         # Check requirements
         # logging.debug(self.inputs['$'].connector)
         # logging.debug(self.inputs['$'].connector.value)
-        if self.inputs['$'].connector.value < self.props['cost'].get_value():
+        if self.inputs['$'].connector.value < self.props['monthly maintenance cost'].get_value():
             raise merlin.InputRequirementException(
                 self,
                 self.inputs['$'],
                 self.inputs['$'].connector.value,
-                self.props['cost'].get_value())
+                self.props['monthly maintenance cost'].get_value())
 
         # Compute outputs
-        self.inputs['$'].consume(self.props['cost'].get_value())
-        self.outputs['desks'].connector.write(self.props['desks'].get_value())
+        self.inputs['$'].consume(self.props['monthly maintenance cost'].get_value())
+        self.outputs['desks'].connector.write(self.props['desks provided'].get_value())

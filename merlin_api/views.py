@@ -1,7 +1,24 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.response import Response
+from . import pymerlin_adapter
+
 from .serializers import *
 from .models import *
 
+
+class SimulationRunViewSet(viewsets.GenericViewSet):
+
+    queryset = Simulation.objects.all()
+    serializer_class = SimulationSerializer
+
+    def retrieve(self, request, pk=None):
+        sim = get_object_or_404(self.get_queryset(), pk=pk)
+        result = pymerlin_adapter.run_simulation(sim)
+        return Response(result)
+
+
+# Model view sets
 
 class SimulationViewSet(viewsets.ModelViewSet):
     queryset = Simulation.objects.all()

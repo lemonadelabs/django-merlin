@@ -39,6 +39,22 @@ class Output(SimObject):
     display_pos_x = models.FloatField(null=True)
     display_pos_y = models.FloatField(null=True)
 
+    def __str__(self):
+        return """
+        <Output: {0}
+            id: {5}
+            sim: {1}
+            unit_type: {2}
+            display_pos_x: {3}
+            display_pos_y: {4}
+        """.format(
+                id(self),
+                self.sim,
+                self.unit_type,
+                self.display_pos_x,
+                self.display_pos_y,
+                self.id)
+
 
 class Entity(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='entities')
@@ -71,12 +87,44 @@ class OutputConnector(Connector):
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='outputs')
     apportion_rule = models.PositiveIntegerField(choices=APPORTION_RULE, default=WEIGHTED)
 
+    def __str__(self):
+        return """
+        <Output: {0}
+            id: {1}
+            name: {5}
+            unit_type: {2}
+            parent: {3}
+            apportion: {4}
+        """.format(
+            id(self),
+            self.id,
+            self.unit_type.value,
+            self.parent,
+            self.apportion_rule,
+            self.name)
+
 
 class InputConnector(Connector):
     source = models.ForeignKey(
         OutputConnector, null=True, on_delete=models.SET_NULL)
     additive_write = models.BooleanField(default=False)
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='inputs')
+
+    def __str__(self):
+        return """
+        <Input: {0}
+            id: {1}
+            name: {5}
+            unit_type: {2}
+            parent: {3}
+            source: {4}
+        """.format(
+            id(self),
+            self.id,
+            self.unit_type.value,
+            self.parent,
+            self.source,
+            self.name)
 
 
 class SimOutputConnector(SimObject):
@@ -86,6 +134,22 @@ class SimOutputConnector(SimObject):
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
     parent = models.ForeignKey(Output, on_delete=models.CASCADE, related_name='inputs')
 
+    def __str__(self):
+        return """
+        <SimOutputConnector: {0}
+            id: {1}
+            name: {5}
+            unit_type: {2}
+            parent: {3}
+            source: {4}
+        """.format(
+            id(self),
+            self.id,
+            self.unit_type.value,
+            self.parent,
+            self.source,
+            self.name)
+
 
 class Endpoint(models.Model):
     parent = models.ForeignKey(OutputConnector, on_delete=models.CASCADE, related_name='endpoints')
@@ -93,6 +157,20 @@ class Endpoint(models.Model):
     input = models.ForeignKey(InputConnector, null=True, on_delete=models.CASCADE)
     sim_output = models.ForeignKey(SimOutputConnector, null=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return """
+        <model.Endpoint: {0}>
+            id: {5}
+            parent: {1}
+            bias: {2}
+            input: {3}
+            sim_output: {4}""".format(
+                id(self),
+                self.parent,
+                self.bias,
+                self.input,
+                self.sim_output,
+                self.id)
 
 class Process(SimObject):
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='processes')
