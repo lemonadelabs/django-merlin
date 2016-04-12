@@ -141,11 +141,13 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     return msim
 
 
-def pymerlin2django(sim: merlin.Simulation) -> None:
+def pymerlin2django(sim: merlin.Simulation) -> int:
     """
     Inserts the simulation object into the django
     database by creating the required django model
     instances.
+
+    :returns: the id for this simulation within the database
     """
 
     # Simulation
@@ -279,3 +281,5 @@ def pymerlin2django(sim: merlin.Simulation) -> None:
                     dps.min_value = ps.min_val
                 dps.property_value = ps.get_value()
                 dps.save()
+
+    return dsim.id
