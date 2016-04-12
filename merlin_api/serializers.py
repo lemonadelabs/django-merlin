@@ -140,6 +140,7 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
             'description',
             'name',
             'num_steps',
+            'start_date',
             'unittypes',
             'attributes',
             'entities',

@@ -2,7 +2,6 @@ from typing import MutableSequence, Mapping, Any
 from merlin_api import models
 from merlin_api.models import Simulation
 from .merlin_test_processes import *
-from merlin_api import tests
 
 # An interface between the Django db model and the pymerlin module
 
@@ -58,7 +57,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
         moutputs[o.id] = moutput
         msim.add_output(moutput)
 
-
     # Entities
     smentities = list()
     mentities = dict()
@@ -80,7 +78,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     for e in sim.entities.all():
         for o in e.outputs.all():
             for ep in o.endpoints.all():
-                if ep.input == None:
+                if ep.input is None:
                     # Connect to an output
                     msim.connect_output(
                         mentities[e.id],

@@ -20,17 +20,17 @@ from merlin_api import views
 
 
 router = routers.DefaultRouter()
-router.register(r'simulation', views.SimulationViewSet)
-router.register(r'unittype', views.UnitTypeViewSet)
-router.register(r'attribute', views.AttributeViewSet)
-router.register(r'output', views.OutputViewSet)
-router.register(r'entity', views.EntityViewSet)
-router.register(r'outputconnector', views.OutputConnectorViewSet)
-router.register(r'inputconnector', views.InputConnectorViewSet)
-router.register(r'simoutputconnector', views.SimOutputConnectorViewSet)
-router.register(r'endpoint', views.EndpointViewSet)
-router.register(r'process', views.ProcessViewSet)
-router.register(r'processproperty', views.ProcessPropertyViewSet)
+router.register(r'simulations', views.SimulationViewSet)
+router.register(r'unittypes', views.UnitTypeViewSet)
+router.register(r'attributes', views.AttributeViewSet)
+router.register(r'outputs', views.OutputViewSet)
+router.register(r'entities', views.EntityViewSet)
+router.register(r'outputconnectors', views.OutputConnectorViewSet)
+router.register(r'inputconnectors', views.InputConnectorViewSet)
+router.register(r'simoutputconnectors', views.SimOutputConnectorViewSet)
+router.register(r'endpoints', views.EndpointViewSet)
+router.register(r'processes', views.ProcessViewSet)
+router.register(r'processproperties', views.ProcessPropertyViewSet)
 router.register(r'simulation-run', views.SimulationRunViewSet, base_name='simulation-run')
 
 urlpatterns = [

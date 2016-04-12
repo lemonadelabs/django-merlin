@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+import datetime
+
+from rest_framework.decorators import detail_route
 
 
 class SimObject(models.Model):
@@ -13,6 +16,7 @@ class SimObject(models.Model):
 
 class Simulation(SimObject):
     num_steps = models.PositiveIntegerField(default=1)
+    start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
 
 
 class UnitType(models.Model):

@@ -8,7 +8,9 @@ from .models import *
 
 
 class SimulationRunViewSet(viewsets.GenericViewSet):
-
+    """
+    Runs a merlin simulation and returns the telemetry result.
+    """
     queryset = Simulation.objects.all()
     serializer_class = SimulationSerializer
 
@@ -23,6 +25,8 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
 class SimulationViewSet(viewsets.ModelViewSet):
     queryset = Simulation.objects.all()
     serializer_class = SimulationSerializer
+
+
 
 
 class UnitTypeViewSet(viewsets.ModelViewSet):
