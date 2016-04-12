@@ -35,5 +35,5 @@ class Command(BaseCommand):
             if not isinstance(sim, pymerlin.merlin.Simulation):
                 raise ValueError("unexpected return type")
 
-            pymerlin_adapter.pymerlin2django(sim)
-            self.stdout.write(self.style.SUCCESS('Successfully added "%s"' % module_name))
+            theId = pymerlin_adapter.pymerlin2django(sim)
+            self.stdout.write(self.style.SUCCESS('Successfully added "%s as %d"' % (module_name, theId)))
