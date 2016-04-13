@@ -1,7 +1,8 @@
 from typing import MutableSequence, Mapping, Any
 from merlin_api import models
 from merlin_api.models import Simulation
-from .merlin_test_processes import *
+from pymerlin import merlin
+from pymerlin.processes import *
 
 # An interface between the Django db model and the pymerlin module
 

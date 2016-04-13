@@ -1,7 +1,7 @@
 from django.test import TestCase
 from . import pymerlin_adapter
 from .models import *
-from .merlin_test_processes import *
+from pymerlin.processes import *
 import json
 
 def create_test_simulation() -> merlin.Simulation:
