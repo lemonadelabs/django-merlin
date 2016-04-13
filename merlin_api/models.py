@@ -178,7 +178,7 @@ class Endpoint(models.Model):
 
 class Process(SimObject):
     parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='processes')
-    priority = models.PositiveSmallIntegerField(default=0)
+    priority = models.PositiveSmallIntegerField(default=1000)
     process_class = models.CharField(max_length=128)
 
 
