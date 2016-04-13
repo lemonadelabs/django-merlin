@@ -11,7 +11,7 @@ class SimObject(models.Model):
         abstract = True
 
     name = models.CharField(max_length=128)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, default="", null=True)
 
 
 class Simulation(SimObject):
@@ -62,7 +62,7 @@ class Output(SimObject):
 
 class Entity(SimObject):
     sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='entities')
-    attributes = ArrayField(models.CharField(max_length=30))
+    attributes = ArrayField(models.CharField(max_length=128))
     parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, related_name='children')
     is_source = models.BooleanField(default=False)
     display_pos_x = models.FloatField(null=True)

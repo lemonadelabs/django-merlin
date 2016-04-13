@@ -27,8 +27,6 @@ class SimulationViewSet(viewsets.ModelViewSet):
     serializer_class = SimulationSerializer
 
 
-
-
 class UnitTypeViewSet(viewsets.ModelViewSet):
     queryset = UnitType.objects.all()
     serializer_class = UnitTypeSerializer

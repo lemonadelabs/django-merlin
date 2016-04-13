@@ -1,11 +1,8 @@
 from django.test import TestCase
 from . import pymerlin_adapter
-from .models import Simulation
+from .models import *
 from .merlin_test_processes import *
-# from pymerlin.processes import *
-
-
-# Create your tests here.
+import json
 
 def create_test_simulation() -> merlin.Simulation:
     sim = merlin.Simulation(
@@ -57,6 +54,28 @@ def create_test_simulation() -> merlin.Simulation:
     e_call_center.add_process(p_staff)
     e_office.add_process(p_building)
     return sim
+
+
+class EntityModelTest(TestCase):
+
+    def setUp(self):
+        sim = create_test_simulation()
+        pymerlin_adapter.pymerlin2django(sim)
+
+    def test_update_position(self):
+        e = Entity.objects.all()[0]
+        response = self.client.get('/api/entities/{0}/'.format(e.id))
+
+        j = json.loads(response.content.decode("utf-8"))
+        j['display_pos_x'] = 100.0
+        j['display_pos_y'] = 100.0
+        j['description'] = "foo"
+        put_response = self.client.put(
+            '/api/entities/{0}/'.format(e.id),
+            content_type='application/json',
+            data=json.dumps(j))
+        print(put_response.status_code)
+        print(put_response.content)
 
 
 class PymerlinRunTest(TestCase):
