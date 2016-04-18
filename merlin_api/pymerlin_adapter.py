@@ -3,6 +3,9 @@ from merlin_api import models
 from merlin_api.models import Simulation
 from pymerlin import merlin
 from pymerlin.processes import *
+import logging
+
+logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
 # An interface between the Django db model and the pymerlin module
 
@@ -242,6 +245,17 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
     for e in sim.get_entities():
         for i in e.inputs:
             i_con = input_con_map[i.id]
+            # Foo
+            if i.source is None:
+                logger.error(
+                    """
+                        Input has no source reference!
+
+                        ENTITY:
+                            {0}
+
+                        INPUT:
+                            {1}""".format(e, i))
             source = output_con_map[i.source.id]
             i_con.source = source
             i_con.save()
