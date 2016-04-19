@@ -123,7 +123,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Output
-        fields = ('id', 'description', 'name', 'sim', 'unit_type')
+        fields = ('id', 'description', 'name', 'sim', 'unit_type', 'target', 'deliver_date')
 
 
 class SimulationSerializer(serializers.HyperlinkedModelSerializer):

@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 import datetime
 
-from rest_framework.decorators import detail_route
-
 
 class SimObject(models.Model):
 
@@ -24,7 +22,8 @@ class UnitType(models.Model):
     class Meta:
         unique_together = ('sim', 'value')
 
-    sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='unittypes')
+    sim = models.ForeignKey(
+        Simulation, on_delete=models.CASCADE, related_name='unittypes')
     value = models.CharField(max_length=30)
 
 
@@ -33,13 +32,17 @@ class Attribute(models.Model):
     class Meta:
         unique_together = ('sim', 'value')
 
-    sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='attributes')
+    sim = models.ForeignKey(
+        Simulation, on_delete=models.CASCADE, related_name='attributes')
     value = models.CharField(max_length=30)
 
 
 class Output(SimObject):
-    sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='outputs')
+    sim = models.ForeignKey(
+        Simulation, on_delete=models.CASCADE, related_name='outputs')
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
+    target = models.FloatField(null=True)
+    deliver_date = models.DateField(null=True)
     display_pos_x = models.FloatField(null=True)
     display_pos_y = models.FloatField(null=True)
 
@@ -61,9 +64,11 @@ class Output(SimObject):
 
 
 class Entity(SimObject):
-    sim = models.ForeignKey(Simulation, on_delete=models.CASCADE, related_name='entities')
+    sim = models.ForeignKey(
+        Simulation, on_delete=models.CASCADE, related_name='entities')
     attributes = ArrayField(models.CharField(max_length=128))
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, related_name='children')
+    parent = models.ForeignKey(
+        'self', null=True, on_delete=models.CASCADE, related_name='children')
     is_source = models.BooleanField(default=False)
     display_pos_x = models.FloatField(null=True)
     display_pos_y = models.FloatField(null=True)
@@ -88,8 +93,10 @@ class OutputConnector(Connector):
         (ABSOLUTE, 'absolute')
     )
 
-    parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='outputs')
-    apportion_rule = models.PositiveIntegerField(choices=APPORTION_RULE, default=WEIGHTED)
+    parent = models.ForeignKey(
+        Entity, on_delete=models.CASCADE, related_name='outputs')
+    apportion_rule = models.PositiveIntegerField(
+        choices=APPORTION_RULE, default=WEIGHTED)
 
     def __str__(self):
         return """
@@ -112,7 +119,8 @@ class InputConnector(Connector):
     source = models.ForeignKey(
         OutputConnector, null=True, on_delete=models.SET_NULL)
     additive_write = models.BooleanField(default=False)
-    parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='inputs')
+    parent = models.ForeignKey(
+        Entity, on_delete=models.CASCADE, related_name='inputs')
 
     def __str__(self):
         return """
@@ -136,7 +144,8 @@ class SimOutputConnector(SimObject):
         OutputConnector, null=True, on_delete=models.SET_NULL)
     additive_write = models.BooleanField(default=False)
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
-    parent = models.ForeignKey(Output, on_delete=models.CASCADE, related_name='inputs')
+    parent = models.ForeignKey(
+        Output, on_delete=models.CASCADE, related_name='inputs')
 
     def __str__(self):
         return """
@@ -156,10 +165,13 @@ class SimOutputConnector(SimObject):
 
 
 class Endpoint(models.Model):
-    parent = models.ForeignKey(OutputConnector, on_delete=models.CASCADE, related_name='endpoints')
+    parent = models.ForeignKey(
+        OutputConnector, on_delete=models.CASCADE, related_name='endpoints')
     bias = models.FloatField(default=0.0)
-    input = models.ForeignKey(InputConnector, null=True, on_delete=models.CASCADE)
-    sim_output = models.ForeignKey(SimOutputConnector, null=True, on_delete=models.CASCADE)
+    input = models.ForeignKey(
+        InputConnector, null=True, on_delete=models.CASCADE)
+    sim_output = models.ForeignKey(
+        SimOutputConnector, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return """
@@ -177,7 +189,8 @@ class Endpoint(models.Model):
                 self.id)
 
 class Process(SimObject):
-    parent = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name='processes')
+    parent = models.ForeignKey(
+        Entity, on_delete=models.CASCADE, related_name='processes')
     priority = models.PositiveSmallIntegerField(default=1000)
     process_class = models.CharField(max_length=128)
 
@@ -194,7 +207,8 @@ class ProcessProperty(SimObject):
         (INT_TYPE, 'integer')
     )
 
-    process = models.ForeignKey(Process, on_delete=models.CASCADE, related_name='properties')
+    process = models.ForeignKey(
+        Process, on_delete=models.CASCADE, related_name='properties')
     property_type = models.PositiveIntegerField(
         choices=PROP_TYPE, default=NUMBER_TYPE)
     default_value = models.FloatField(default=0.0)
