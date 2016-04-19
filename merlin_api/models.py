@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 import datetime
 
 
@@ -188,9 +188,12 @@ class Endpoint(models.Model):
                 self.sim_output,
                 self.id)
 
+
 class Process(SimObject):
     parent = models.ForeignKey(
-        Entity, on_delete=models.CASCADE, related_name='processes')
+        Entity,
+        on_delete=models.CASCADE,
+        related_name='processes')
     priority = models.PositiveSmallIntegerField(default=1000)
     process_class = models.CharField(max_length=128)
 
@@ -215,3 +218,20 @@ class ProcessProperty(SimObject):
     max_value = models.FloatField(null=True)
     min_value = models.FloatField(null=True)
     property_value = models.FloatField()
+
+
+class Scenario(models.Model):
+    sim = models.ForeignKey(
+        Simulation,
+        on_delete=models.CASCADE,
+        related_name='scenarios')
+    start_offset = models.PositiveIntegerField(null=True)
+
+
+class Event(models.Model):
+    scenario = models.ForeignKey(
+        Scenario,
+        on_delete=models.CASCADE,
+        related_name='events')
+    time = models.PositiveIntegerField(default=1)
+    actions = JSONField(default=list())
