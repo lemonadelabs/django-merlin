@@ -156,6 +156,13 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     msim.add_entities(mentities.values())
     msim.set_source_entities(smentities)
 
+    # add parent relationships
+    for e in sim.entities.all():
+        if e.parent:
+            child = mentities[e.id]
+            parent = mentities[e.parent.id]
+            msim.parent_entity(parent, child)
+
     # Sim Connections
     for e in sim.entities.all():
         for o in e.outputs.all():

@@ -2,6 +2,7 @@ from django.test import TestCase
 from . import pymerlin_adapter
 from .models import *
 from pymerlin.processes import *
+from pymerlin_examples import RecordStorageFacility
 import json
 
 def create_test_simulation() -> merlin.Simulation:
@@ -110,9 +111,9 @@ class PymerlinRunTest(TestCase):
 class Pymerlin2DjangoTestCase(TestCase):
 
     def setUp(self):
-        self.sim = create_test_simulation()
+        self.sim = RecordStorageFacility.govRecordStorage()
         pymerlin_adapter.pymerlin2django(self.sim)
-        self.dsim = Simulation.objects.filter(name='test_sim')[0]
+        self.dsim = Simulation.objects.all()[0]
 
     def test_sim_integrity(self):
         self.assertEqual(self.sim.num_steps, self.dsim.num_steps)
@@ -239,9 +240,9 @@ class Django2PymerlinTestCase(TestCase):
 
 
     def setUp(self):
-        s = create_test_simulation()
+        s = RecordStorageFacility.govRecordStorage()
         pymerlin_adapter.pymerlin2django(s)
-        self.dsim = Simulation.objects.filter(name='test_sim')[0]
+        self.dsim = Simulation.objects.all()[0]
         self.sim = pymerlin_adapter.django2pymerlin(self.dsim)
 
     def tearDown(self):
@@ -260,9 +261,12 @@ class Django2PymerlinTestCase(TestCase):
                 if e.id == de.id:
                     matched_entity = e
             self.assertIsNotNone(matched_entity)
-            self.assertIsNone(de.parent)
-            self.assertIsNone(e.parent)
-            self.assertEqual(e.parent, de.parent)
+
+            if(matched_entity.parent is None):
+                self.assertIsNone(de.parent)
+            else:
+                self.assertEqual(matched_entity.parent.id, de.parent.id)
+
             if de.name == 'Budget':
                 self.assertTrue(de.is_source)
                 self.assertTrue(matched_entity in self.sim.source_entities)
@@ -344,7 +348,7 @@ class Django2PymerlinTestCase(TestCase):
                 self.assertEqual(matched_input.name, i.name)
 
     def test_sim_output_integrity(self):
-        self.assertEqual(len(self.sim.outputs), 1)
+        self.assertEqual(len(self.sim.outputs), len(self.dsim.outputs.all()))
         for o in self.sim.outputs:
             matched_output = None
             self.assertEqual(len(self.sim.outputs),
@@ -369,6 +373,9 @@ class Django2PymerlinTestCase(TestCase):
     def test_retrieve_and_run(self):
         self.sim.run()
         result = list(self.sim.outputs)[0].result
+        results = [o.result for o in self.sim.outputs]
+        for r in results:
+            print("result: {0}".format(r))
         expected_result = \
             [20.0, 40.0, 60.0, 80.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
 
