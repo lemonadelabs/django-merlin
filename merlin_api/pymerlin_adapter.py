@@ -36,7 +36,17 @@ def delete_django_sim(sim_id: int) -> None:
 
 def get_fullname_from_process_class(theClass: type) -> str:
     """
-    Achim, documentation please!
+    :param type theClass: a subclass from merlin.Process
+    :returns: import path incl modules and class name
+    :rtype: str
+
+    Constructs the import path string, which allows importing the process class
+    to a later point in time with :py:func:`.get_process_class_from_fullname`.
+
+    .. note::
+
+        The result will depend on the linkage of source code (symlink or entry in sys.path)
+        and method of importing the process class.
     """
     if not issubclass(theClass, merlin.Process):
         raise TypeError("expecting sub class of merlin.Process")
@@ -46,7 +56,11 @@ def get_fullname_from_process_class(theClass: type) -> str:
 
 def get_process_class_from_fullname(theName: str) -> type:
     """
-    Achim, documentation please!
+    :param str theName: name used to import the module and find the
+       merlin.Process subclass
+    :returns: the class (not the object!)
+    
+    This is the inverse of the :py:func:`.get_process_class_from_fullname`.
     """
     # split name into parts
     mod_path=theName.split(".")[:-1]
