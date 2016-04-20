@@ -1,9 +1,10 @@
+import logging
+import importlib
 from typing import MutableSequence, Mapping, Any
 from merlin_api import models
 from merlin_api.models import Simulation
 from pymerlin import merlin
 from pymerlin.processes import *
-import logging
 
 logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
@@ -32,6 +33,37 @@ def delete_django_sim(sim_id: int) -> None:
     sim.entities.all().delete()
     sim.outputs.all().delete()
     sim.delete()
+
+def get_fullname_from_process_class(theClass: type) -> str:
+    """
+    Achim, documentation please!
+    """
+    if not issubclass(theClass, merlin.Process):
+        raise TypeError("expecting sub class of merlin.Process")
+    proc_classname = theClass.__name__
+    proc_module = theClass.__module__
+    return "%s.%s"%(proc_module, proc_classname)
+
+def get_process_class_from_fullname(theName: str) -> type:
+    """
+    Achim, documentation please!
+    """
+    # split name into parts
+    mod_path=theName.split(".")[:-1]
+    if len(mod_path):
+        try:
+            namespace=importlib.import_module(".".join(mod_path)).__dict__
+        except ImportError:
+            raise ValueError('module containing process class %s could not be imported' % theName)
+    else:
+        # don't like this!
+        namespace=globals()
+    class_def=theName.split(".")[-1]
+    if class_def not in namespace:
+            raise ValueError('process class %s not found' % theName)
+
+    # execute this function
+    return namespace[class_def]
 
 
 def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
@@ -103,7 +135,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
         # t_o = len(mentities[e.id].outputs)
 
         for p in e.processes.all():
-            mproc_class = globals()[p.process_class]
+            mproc_class = get_process_class_from_fullname(p.process_class)
             mproc = mproc_class()
             mproc.priority = p.priority
             mproc.id = p.id
@@ -279,7 +311,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
             dprocess.parent = entity_map[e.id]
             dprocess.name = p.name
             dprocess.priority = p.priority
-            dprocess.process_class = p.__class__.__name__
+            dprocess.process_class = get_fullname_from_process_class(type(p))
             dprocess.save()
 
             # Create Process Properties
