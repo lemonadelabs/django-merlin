@@ -100,7 +100,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
 
-        t_o = len(mentities[e.id].outputs)
+        # t_o = len(mentities[e.id].outputs)
 
         for p in e.processes.all():
             mproc_class = globals()[p.process_class]
@@ -118,8 +118,8 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
 
             mentities[e.id].add_process(mproc)
 
-        t_o2 = len(mentities[e.id].outputs)
-        assert t_o == t_o2
+        # t_o2 = len(mentities[e.id].outputs)
+        # assert t_o == t_o2
 
     # rewrite input and output connector ids
 
