@@ -1,8 +1,11 @@
 import logging
 import importlib
-from typing import MutableSequence, Mapping, Any
+from typing import MutableSequence, Mapping, Any, List
+
+import pymerlin
+
 from merlin_api import models
-from merlin_api.models import Simulation
+from merlin_api.models import Simulation, Scenario
 from pymerlin import merlin
 from pymerlin.processes import *
 
@@ -12,16 +15,45 @@ logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
 
 def run_simulation(
-        sim: models.Simulation) -> MutableSequence[Mapping[str, Any]]:
+        sim: models.Simulation,
+        scenarios: List[models.Scenario]=list()) -> MutableSequence[Mapping[str, Any]]:
     """
     Runs the supplied simulation and returns the resulting telemetry data
     :param sim:
+    :param scenarios: A set of scenarios to run on the sim
     :return:
     """
+
     msim = django2pymerlin(sim)
+    m_scenarios = list()
+
+    if scenarios:
+        for ds in scenarios:
+            ms = django_scenario2pymerlin(ds, msim)
+            m_scenarios.append(ms)
+
     # msim = tests.create_test_simulation()
-    msim.run()
+    msim.run(scenarios=m_scenarios)
     return msim.get_sim_telemetry()
+
+
+def django_scenario2pymerlin(
+        scenario: models.Scenario,
+        sim: merlin.Simulation) -> merlin.Scenario:
+
+    s = merlin.Scenario(sim, set())
+    s.id = scenario.id
+    s.name = scenario.name
+
+    p_events = set()
+    for e in scenario.events.all():
+        p_event = merlin.Event.create(e.time, e.actions)
+        p_event.id = e.id
+        p_event.name = e.name
+        p_events.add(p_event)
+
+    s.events = p_events
+    return s
 
 
 def delete_django_sim(sim_id: int) -> None:

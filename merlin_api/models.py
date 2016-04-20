@@ -220,7 +220,7 @@ class ProcessProperty(SimObject):
     property_value = models.FloatField()
 
 
-class Scenario(models.Model):
+class Scenario(SimObject):
     sim = models.ForeignKey(
         Simulation,
         on_delete=models.CASCADE,
@@ -228,7 +228,7 @@ class Scenario(models.Model):
     start_offset = models.PositiveIntegerField(null=True)
 
 
-class Event(models.Model):
+class Event(SimObject):
     scenario = models.ForeignKey(
         Scenario,
         on_delete=models.CASCADE,
