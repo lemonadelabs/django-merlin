@@ -1,8 +1,10 @@
 from merlin.settings import *
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+
+STATIC_ROOT = '/var/webstack-data/django-static'
+STATIC_URL = '/django-static/'
 
 DATABASES = {
     'default': {
