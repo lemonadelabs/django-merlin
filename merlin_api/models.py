@@ -194,8 +194,9 @@ class Process(SimObject):
         Entity,
         on_delete=models.CASCADE,
         related_name='processes')
-    priority = models.PositiveSmallIntegerField(default=1000)
-    process_class = models.CharField(max_length=128)
+    priority = models.PositiveSmallIntegerField(default=100)
+    process_class = models.CharField(max_length=256)
+    parameters = JSONField(default=dict())
 
 
 class ProcessProperty(SimObject):

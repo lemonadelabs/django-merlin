@@ -185,26 +185,62 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
 
-        # t_o = len(mentities[e.id].outputs)
+        t_o = len(mentities[e.id].outputs)
+        # t_i = len(mentities[e.id].inputs)
 
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
-            mproc = mproc_class()
-            mproc.priority = p.priority
+            mproc = mentities[e.id].create_process(
+                mproc_class,
+                p.parameters,
+                p.priority)   # type: merlin.Process
             mproc.id = p.id
+
+            # By this stage, process property inputs and outputs
+            # should have previously created matching entity inputs and outputs
+            # assert that this is true
+            # for mproc_input in mproc.inputs.values():
+            #     match = False
+            #     for mi in mentities[e.id].inputs:
+            #         if mi.type == mproc_input.type:
+            #             match = True
+            #             break
+            #
+            #     if not match:
+            #         logging.error("""input missmatch: process= {0}, input= {1}
+            #         has no matching input in entity= {2}""".format(
+            #             mproc,
+            #             mproc_input,
+            #             mentities[e.id]))
+
+            for mproc_output in mproc.outputs.values():
+                match = False
+                for mi in mentities[e.id].outputs:
+                    if mi.type == mproc_output.type:
+                        match = True
+                        break
+
+                if not match:
+                    logging.error("""output missmatch: process= {0} output= {1}
+                    has no matching output in entity= {2}""".format(
+                        mproc,
+                        mproc_output,
+                        mentities[e.id]))
 
             # load in the process property values
             for pprop in p.properties.all():
                 mpprop = mproc.get_prop(pprop.name)
+                assert mpprop is not None
                 mpprop.id = pprop.id
                 mpprop.max_val = pprop.max_value
                 mpprop.min_val = pprop.min_value
                 mpprop.set_value(pprop.property_value)
 
-            mentities[e.id].add_process(mproc)
 
-        # t_o2 = len(mentities[e.id].outputs)
-        # assert t_o == t_o2
+        t_o2 = len(mentities[e.id].outputs)
+        #t_i2 = len(mentities[e.id].inputs)
+        assert t_o == t_o2
+        #assert t_i == t_i2
 
     # rewrite input and output connector ids
 
@@ -269,6 +305,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
         doutput = models.Output()
         doutput.name = o.name
         doutput.sim = dsim
+        assert o.sim is not None
         doutput.unit_type = ut_map[o.type]
         doutput.save()
         output_map[o.id] = doutput
@@ -365,6 +402,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
             dprocess.name = p.name
             dprocess.priority = p.priority
             dprocess.process_class = get_fullname_from_process_class(type(p))
+            dprocess.parameters = p.default_params
             dprocess.save()
 
             # Create Process Properties
@@ -381,5 +419,4 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
                     dps.min_value = ps.min_val
                 dps.property_value = ps.get_value()
                 dps.save()
-
     return dsim.id

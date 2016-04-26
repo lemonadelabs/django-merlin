@@ -48,12 +48,29 @@ def create_test_simulation() -> merlin.Simulation:
     sim.connect_entities(e_office, e_call_center, 'desks')
 
     # Add entity processes
-    p_budget = BudgetProcess(name='Budget')
-    p_staff = CallCenterStaffProcess(name='Call Center Staff')
-    p_building = BuildingMaintainenceProcess(name='Building Maintenance')
-    e_budget.add_process(p_budget)
-    e_call_center.add_process(p_staff)
-    e_office.add_process(p_building)
+    # p_budget = BudgetProcess(name='Budget')
+    # p_staff = CallCenterStaffProcess(name='Call Center Staff')
+    # p_building = BuildingMaintainenceProcess(name='Building Maintenance')
+    # e_budget.add_process(p_budget)
+    # e_call_center.add_process(p_staff)
+    # e_office.add_process(p_building)
+    e_budget.create_process(
+        BudgetProcess,
+        {
+            'name': "Budget"
+        })
+
+    e_call_center.create_process(
+        CallCenterStaffProcess,
+        {
+            'name': "Call Center Staff"
+        })
+
+    e_office.create_process(
+        BuildingMaintainenceProcess,
+        {
+            'name': "Building Maintenance"
+        })
     return sim
 
 
@@ -129,9 +146,11 @@ class Pymerlin2DjangoTestCase(TestCase):
                 if e.name == de.name:
                     matched_entity = e
             self.assertIsNotNone(matched_entity)
-            self.assertIsNone(de.parent)
-            self.assertIsNone(e.parent)
-            self.assertEqual(e.parent, de.parent)
+            if de.parent:
+                self.assertEqual(matched_entity.parent.name, de.parent.name)
+            else:
+                self.assertIsNone(matched_entity.parent)
+
             if de.name == 'Budget':
                 self.assertTrue(de.is_source)
                 self.assertTrue(matched_entity in self.sim.source_entities)
@@ -187,7 +206,7 @@ class Pymerlin2DjangoTestCase(TestCase):
                                 input_c.parent.name,
                                 matched_endpoint.sim_output.parent.name)
                     self.assertIsNotNone(matched_endpoint)
-                    self.assertEqual(bias, matched_endpoint.bias)
+                    self.assertAlmostEqual(bias, matched_endpoint.bias)
 
     def test_entity_input_connections(self):
         for e in self.sim.get_entities():
@@ -213,7 +232,7 @@ class Pymerlin2DjangoTestCase(TestCase):
                 self.assertEqual(matched_input.name, i.name)
 
     def test_sim_output_integrity(self):
-        self.assertEqual(len(self.sim.outputs), 1)
+        self.assertEqual(len(self.sim.outputs), len(self.dsim.outputs.all()))
         for o in self.sim.outputs:
             matched_output = None
             self.assertEqual(len(self.sim.outputs), len(self.dsim.outputs.all()))
@@ -285,7 +304,6 @@ class Django2PymerlinTestCase(TestCase):
                 "dserialised entity with extra output: {0}".format(e))
 
             # Output testing
-
             for o in e.outputs:
                 self.assertIsNotNone(o.parent)
                 matched_output = None
@@ -321,7 +339,7 @@ class Django2PymerlinTestCase(TestCase):
                                 input_c.parent.name,
                                 matched_endpoint.sim_output.parent.name)
                     self.assertIsNotNone(matched_endpoint)
-                    self.assertEqual(bias, matched_endpoint.bias)
+                    self.assertAlmostEqual(bias, matched_endpoint.bias)
 
     def test_entity_input_connections(self):
         for e in self.sim.get_entities():
@@ -371,14 +389,20 @@ class Django2PymerlinTestCase(TestCase):
                 self.assertEqual(matched_input.unit_type.value, i.type)
 
     def test_retrieve_and_run(self):
+        # Compare to unserialised model, should be same output
+        orig_sim = RecordStorageFacility.govRecordStorage()  # type merlin.Simulation
+        orig_sim.num_steps = 10
+        orig_sim.run()
+        self.sim.num_steps = 10
         self.sim.run()
-        result = list(self.sim.outputs)[0].result
-        results = [o.result for o in self.sim.outputs]
-        for r in results:
-            print("result: {0}".format(r))
-        expected_result = \
-            [20.0, 40.0, 60.0, 80.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
+        outputs_compared = 0
+        for o in self.sim.outputs:
+            for oo in orig_sim.outputs:
+                if o.type == oo.type:
+                    outputs_compared += 1
+                    self.assertEqual(len(o.result), len(oo.result))
+                    for i in range(0, len(o.result)):
+                        self.assertAlmostEqual(o.result[i], oo.result[i])
+        self.assertEqual(outputs_compared, 2)
 
-        self.assertEqual(len(result), len(expected_result))
-        for i in range(0, len(result)):
-            self.assertAlmostEqual(result[i], expected_result[i])
+
