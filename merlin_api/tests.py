@@ -3,7 +3,7 @@ from . import pymerlin_adapter
 from .models import *
 from pymerlin.processes import *
 from pymerlin import actions
-from pymerlin_examples import RecordStorageFacility
+from examples import RecordStorageFacility
 import json
 
 def create_test_simulation() -> merlin.Simulation:
