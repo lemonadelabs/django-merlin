@@ -2,6 +2,29 @@ from rest_framework import serializers
 from .models import *
 
 
+class EventsSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Event
+        fields = (
+            'id',
+            'scenario',
+            'time',
+            'actions'
+        )
+
+
+class ScenarioSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Scenario
+        fields = (
+            'id',
+            'sim',
+            'start_offset',
+            'events'
+        )
+
 class UnitTypeRelatedField(serializers.RelatedField):
 
     def to_internal_value(self, data):
@@ -130,9 +153,9 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
             'sim',
             'unit_type',
             'target',
-            'deliver_date'
+            'deliver_date',
             'display_pos_x',
-            'display_pos_y'        )
+            'display_pos_y')
 
 
 class SimulationSerializer(serializers.HyperlinkedModelSerializer):
@@ -141,6 +164,7 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
     attributes = AttributeSerializer(many=True, read_only=True)
     entities = EntitySerializer(many=True, read_only=True)
     outputs = OutputSerializer(many=True, read_only=True)
+    scenarios = ScenarioSerializer(many=True, read_only=True)
 
     class Meta:
         model = Simulation
@@ -153,7 +177,8 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
             'unittypes',
             'attributes',
             'entities',
-            'outputs')
+            'outputs',
+            'scenarios')
 
 
 class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
@@ -169,3 +194,5 @@ class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
             'parent',
             'unit_type',
             'additive_write')
+
+

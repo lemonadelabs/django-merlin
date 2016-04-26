@@ -2,6 +2,7 @@ from django.test import TestCase
 from . import pymerlin_adapter
 from .models import *
 from pymerlin.processes import *
+from pymerlin import actions
 from pymerlin_examples import RecordStorageFacility
 import json
 
@@ -48,12 +49,6 @@ def create_test_simulation() -> merlin.Simulation:
     sim.connect_entities(e_office, e_call_center, 'desks')
 
     # Add entity processes
-    # p_budget = BudgetProcess(name='Budget')
-    # p_staff = CallCenterStaffProcess(name='Call Center Staff')
-    # p_building = BuildingMaintainenceProcess(name='Building Maintenance')
-    # e_budget.add_process(p_budget)
-    # e_call_center.add_process(p_staff)
-    # e_office.add_process(p_building)
     e_budget.create_process(
         BudgetProcess,
         {
@@ -82,18 +77,24 @@ class EntityModelTest(TestCase):
 
     def test_update_position(self):
         e = Entity.objects.all()[0]
-        response = self.client.get('/api/entities/{0}/'.format(e.id))
+        self.assertIsNone(e.display_pos_x)
+        self.assertIsNone(e.display_pos_y)
+        print(e.attributes)
 
-        j = json.loads(response.content.decode("utf-8"))
-        j['display_pos_x'] = 100.0
-        j['display_pos_y'] = 100.0
+        request = self.client.get('/api/entities/{0}/'.format(e.id))
+        j = json.loads(request.content.decode("utf-8"))
+        j['display_pos_x'] = 1000.0
+        j['display_pos_y'] = 1000.0
         j['description'] = "foo"
-        put_response = self.client.put(
+        self.client.put(
             '/api/entities/{0}/'.format(e.id),
             content_type='application/json',
             data=json.dumps(j))
-        print(put_response.status_code)
-        print(put_response.content)
+
+        ue = Entity.objects.get(pk=e.id)
+        self.assertIsNotNone(ue)
+        self.assertEqual(ue.display_pos_y, 1000.0)
+        self.assertEqual(ue.display_pos_x, 1000.0)
 
 
 class PymerlinRunTest(TestCase):
@@ -162,7 +163,8 @@ class Pymerlin2DjangoTestCase(TestCase):
                 if ed.name == e.name:
                     matched_entity = ed
             self.assertIsNotNone(matched_entity)
-            # Make sure that for every output in sim there is exactly one in dsim
+            # Make sure that for every output in sim
+            # there is exactly one in dsim
             self.assertEqual(
                 len(e.outputs),
                 len(matched_entity.outputs.all()))
@@ -215,7 +217,8 @@ class Pymerlin2DjangoTestCase(TestCase):
                 if ed.name == e.name:
                     matched_entity = ed
             self.assertIsNotNone(matched_entity)
-            # Make sure that for every input in sim there is exactly one in dsim
+            # Make sure that for every input in sim there
+            #  is exactly one in dsim
             self.assertEqual(len(e.inputs), len(matched_entity.inputs.all()))
 
             for i in e.inputs:
@@ -257,7 +260,6 @@ class Pymerlin2DjangoTestCase(TestCase):
 
 class Django2PymerlinTestCase(TestCase):
 
-
     def setUp(self):
         s = RecordStorageFacility.govRecordStorage()
         pymerlin_adapter.pymerlin2django(s)
@@ -281,7 +283,7 @@ class Django2PymerlinTestCase(TestCase):
                     matched_entity = e
             self.assertIsNotNone(matched_entity)
 
-            if(matched_entity.parent is None):
+            if matched_entity.parent is None:
                 self.assertIsNone(de.parent)
             else:
                 self.assertEqual(matched_entity.parent.id, de.parent.id)
@@ -297,7 +299,8 @@ class Django2PymerlinTestCase(TestCase):
                 if ed.id == e.id:
                     matched_entity = ed
             self.assertIsNotNone(matched_entity)
-            # Make sure that for every output in sim there is exactly one in dsim
+            # Make sure that for every output in sim there
+            # is exactly one in dsim
             self.assertEqual(
                 len(e.outputs),
                 len(matched_entity.outputs.all()),
@@ -348,7 +351,8 @@ class Django2PymerlinTestCase(TestCase):
                 if ed.id == e.id:
                     matched_entity = ed
             self.assertIsNotNone(matched_entity)
-            # Make sure that for every input in sim there is exactly one in dsim
+            # Make sure that for every input in sim
+            # there is exactly one in dsim
             self.assertEqual(len(e.inputs), len(matched_entity.inputs.all()))
 
             for i in e.inputs:
@@ -390,7 +394,8 @@ class Django2PymerlinTestCase(TestCase):
 
     def test_retrieve_and_run(self):
         # Compare to unserialised model, should be same output
-        orig_sim = RecordStorageFacility.govRecordStorage()  # type merlin.Simulation
+        orig_sim = \
+            RecordStorageFacility.govRecordStorage()  # type merlin.Simulation
         orig_sim.num_steps = 10
         orig_sim.run()
         self.sim.num_steps = 10
@@ -404,5 +409,48 @@ class Django2PymerlinTestCase(TestCase):
                     for i in range(0, len(o.result)):
                         self.assertAlmostEqual(o.result[i], oo.result[i])
         self.assertEqual(outputs_compared, 2)
+
+
+class ScenarioAndEventTest(TestCase):
+
+    def setUp(self):
+        # Create some test scenario and events
+        self.test_sim = create_test_simulation()
+
+        e = self.test_sim.get_entity_by_name('call center')
+        p = e.get_process_by_name('Call Center Staff')
+        prop = p.get_prop('staff salary')
+        self.merlin_event = merlin.Event.create(
+            5,
+            "Entity {0} := Property {1}, 2.0".format(e.id, prop.id))
+
+        self.merlin_scenario = merlin.Scenario(
+            self.test_sim,
+            {self.merlin_event},
+            name="My Test Scenario")
+
+
+    def test_scenario_serialization(self):
+        dsim_id = pymerlin_adapter.pymerlin2django(self.test_sim)
+        pymerlin_adapter.pymerlin_scenario2django(
+            self.merlin_scenario,
+            Simulation.objects.get(pk=dsim_id))
+        dscenario = Scenario.objects.all()[0]
+        self.assertIsNotNone(dscenario)
+        self.assertEqual(
+            len(dscenario.events.all()),
+            len(self.merlin_scenario.events))
+        self.assertEqual(
+            dscenario.start_offset,
+            self.merlin_scenario.start_offset)
+        devent = dscenario.events.all()[0]
+        self.assertEqual(devent.time, self.merlin_event.time)
+        self.assertEqual(devent.actions[0], self.merlin_event.actions[0])
+
+
+    def test_deserialize_and_run(self):
+        pass
+
+
 
 

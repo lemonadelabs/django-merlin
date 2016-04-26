@@ -16,7 +16,8 @@ logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
 def run_simulation(
         sim: models.Simulation,
-        scenarios: List[models.Scenario]=list()) -> MutableSequence[Mapping[str, Any]]:
+        scenarios: List[models.Scenario]=list()) -> \
+        MutableSequence[Mapping[str, Any]]:
     """
     Runs the supplied simulation and returns the resulting telemetry data
     :param sim:
@@ -37,9 +38,44 @@ def run_simulation(
     return msim.get_sim_telemetry()
 
 
+def pymerlin_scenario2django(
+        scenario: merlin.Scenario,
+        sim: models.Simulation) -> models.Scenario:
+    """
+    Converts a merlin.Scenario into a django model representation
+    and saves the result into the database.
+    :param scenario: The merlin.Scenario to convert
+    :param sim: The simulation to relate the scenario to
+    :return:
+    """
+
+    ds = models.Scenario()
+    ds.sim = sim
+    ds.name = scenario.name
+    ds.start_offset = scenario.start_offset
+    ds.save()
+
+    # Add the events
+    for e in scenario.events:
+        de = models.Event()
+        de.scenario = ds
+        de.actions = e.actions
+        de.time = e.time
+        de.save()
+
+    return ds
+
+
 def django_scenario2pymerlin(
         scenario: models.Scenario,
         sim: merlin.Simulation) -> merlin.Scenario:
+    """
+    Converts a django-merlin scenario into a pymerlin one
+    :param scenario: The django scenario model instance
+    :param sim: the already deserialised simulation to relate the
+    scenario to.
+    :return: The merlin.Scenario representation
+    """
 
     s = merlin.Scenario(sim, set())
     s.id = scenario.id
@@ -66,9 +102,10 @@ def delete_django_sim(sim_id: int) -> None:
     sim.outputs.all().delete()
     sim.delete()
 
-def get_fullname_from_process_class(theClass: type) -> str:
+
+def get_fullname_from_process_class(the_class: type) -> str:
     """
-    :param type theClass: a subclass from merlin.Process
+    :param type the_class: a subclass from merlin.Process
     :returns: import path incl modules and class name
     :rtype: str
 
@@ -77,36 +114,40 @@ def get_fullname_from_process_class(theClass: type) -> str:
 
     .. note::
 
-        The result will depend on the linkage of source code (symlink or entry in sys.path)
+        The result will depend on the linkage of source code
+        (symlink or entry in sys.path)
         and method of importing the process class.
     """
-    if not issubclass(theClass, merlin.Process):
+    if not issubclass(the_class, merlin.Process):
         raise TypeError("expecting sub class of merlin.Process")
-    proc_classname = theClass.__name__
-    proc_module = theClass.__module__
-    return "%s.%s"%(proc_module, proc_classname)
+    proc_classname = the_class.__name__
+    proc_module = the_class.__module__
+    return "%s.%s" % (proc_module, proc_classname)
 
-def get_process_class_from_fullname(theName: str) -> type:
+
+def get_process_class_from_fullname(the_name: str) -> type:
     """
-    :param str theName: name used to import the module and find the
+    :param str the_name: name used to import the module and find the
        merlin.Process subclass
     :returns: the class (not the object!)
     
     This is the inverse of the :py:func:`.get_process_class_from_fullname`.
     """
     # split name into parts
-    mod_path=theName.split(".")[:-1]
+    mod_path = the_name.split(".")[:-1]
     if len(mod_path):
         try:
-            namespace=importlib.import_module(".".join(mod_path)).__dict__
+            namespace = importlib.import_module(".".join(mod_path)).__dict__
         except ImportError:
-            raise ValueError('module containing process class %s could not be imported' % theName)
+            raise ValueError(
+                'module containing process class %s could not be imported'
+                % the_name)
     else:
         # don't like this!
-        namespace=globals()
-    class_def=theName.split(".")[-1]
+        namespace = globals()
+    class_def = the_name.split(".")[-1]
     if class_def not in namespace:
-            raise ValueError('process class %s not found' % theName)
+            raise ValueError('process class %s not found' % the_name)
 
     # execute this function
     return namespace[class_def]
@@ -186,7 +227,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                             o.apportion_rule))
 
         t_o = len(mentities[e.id].outputs)
-        # t_i = len(mentities[e.id].inputs)
 
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
@@ -195,23 +235,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 p.parameters,
                 p.priority)   # type: merlin.Process
             mproc.id = p.id
-
-            # By this stage, process property inputs and outputs
-            # should have previously created matching entity inputs and outputs
-            # assert that this is true
-            # for mproc_input in mproc.inputs.values():
-            #     match = False
-            #     for mi in mentities[e.id].inputs:
-            #         if mi.type == mproc_input.type:
-            #             match = True
-            #             break
-            #
-            #     if not match:
-            #         logging.error("""input missmatch: process= {0}, input= {1}
-            #         has no matching input in entity= {2}""".format(
-            #             mproc,
-            #             mproc_input,
-            #             mentities[e.id]))
 
             for mproc_output in mproc.outputs.values():
                 match = False
@@ -236,11 +259,8 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 mpprop.min_val = pprop.min_value
                 mpprop.set_value(pprop.property_value)
 
-
         t_o2 = len(mentities[e.id].outputs)
-        #t_i2 = len(mentities[e.id].inputs)
         assert t_o == t_o2
-        #assert t_i == t_i2
 
     # rewrite input and output connector ids
 
