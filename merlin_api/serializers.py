@@ -25,6 +25,7 @@ class ScenarioSerializer(serializers.HyperlinkedModelSerializer):
             'events'
         )
 
+
 class UnitTypeRelatedField(serializers.RelatedField):
 
     def to_internal_value(self, data):
@@ -194,5 +195,3 @@ class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
             'parent',
             'unit_type',
             'additive_write')
-
-

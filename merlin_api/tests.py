@@ -457,10 +457,31 @@ class ScenarioAndEventTest(TestCase):
             self.merlin_scenario,
             self.django_sim)
         dscenario = Scenario.objects.all()[0]
-        result= pymerlin_adapter.run_simulation(
+        result = pymerlin_adapter.run_simulation(
             self.django_sim,
             [dscenario])
-        print(result)
+
+        od = None
+        for to in result:
+            if to['type'] == 'Output':
+                od = to
+                break
+
+        self.assertIsNotNone(od)
+        expected_result = \
+            [20.0, 40.0, 60.0, 80.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
+
+        self.assertEqual(len(expected_result), len(od['data']['value']))
+        for i in range(0, len(expected_result)):
+            self.assertAlmostEqual(expected_result[i], od['data']['value'][i])
+
+
+
+
+
+
+
+
 
 
 
