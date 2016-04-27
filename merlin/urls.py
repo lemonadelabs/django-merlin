@@ -32,6 +32,7 @@ router.register(r'endpoints', views.EndpointViewSet)
 router.register(r'processes', views.ProcessViewSet)
 router.register(r'processproperties', views.ProcessPropertyViewSet)
 router.register(r'scenarios', views.ScenarioViewSet)
+router.register(r'events', views.EventViewSet)
 router.register(
     r'simulation-run',
     views.SimulationRunViewSet,

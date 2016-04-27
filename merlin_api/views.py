@@ -22,6 +22,10 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
 
 # Model view sets
 
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventsSerializer
+
 class ScenarioViewSet(viewsets.ModelViewSet):
     queryset = Scenario.objects.all()
     serializer_class = ScenarioSerializer

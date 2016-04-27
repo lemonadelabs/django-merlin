@@ -69,13 +69,15 @@ def create_test_simulation() -> merlin.Simulation:
         })
     return sim
 
-def create_test_scenarios(sim: Simulation) -> List[merlin.Scenario]:
+def create_test_scenarios() -> List[merlin.Scenario]:
     # adds some test scenarios to add to the db
     # s1 adds some attributes to the simulation
     # s2 adds some unit types to the simulation.
     s1_e1 = merlin.Event.create(1, "+ Attribute foo bar baz")
     s2_e1 = merlin.Event.create(1, "+ UnitType snickers_bars")
-    s1 = merlin.Scenario(sim, events={s1_e1})
+    s1 = merlin.Scenario({s1_e1})
+    s2 = merlin.Scenario({s2_e1})
+    return list([s1, s2])
 
 
 

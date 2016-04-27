@@ -1,3 +1,5 @@
+from nis import match
+
 from rest_framework import serializers
 from .models import *
 
@@ -15,6 +17,8 @@ class EventsSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ScenarioSerializer(serializers.HyperlinkedModelSerializer):
+
+    events = EventsSerializer(many=True, read_only=True)
 
     class Meta:
         model = Scenario
