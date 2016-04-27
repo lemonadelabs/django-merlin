@@ -31,7 +31,11 @@ router.register(r'simoutputconnectors', views.SimOutputConnectorViewSet)
 router.register(r'endpoints', views.EndpointViewSet)
 router.register(r'processes', views.ProcessViewSet)
 router.register(r'processproperties', views.ProcessPropertyViewSet)
-router.register(r'simulation-run', views.SimulationRunViewSet, base_name='simulation-run')
+router.register(r'scenarios', views.ScenarioViewSet)
+router.register(
+    r'simulation-run',
+    views.SimulationRunViewSet,
+    base_name='simulation-run')
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

@@ -1,3 +1,4 @@
+from typing import List
 from django.test import TestCase
 from . import pymerlin_adapter
 from .models import *
@@ -68,6 +69,15 @@ def create_test_simulation() -> merlin.Simulation:
         })
     return sim
 
+def create_test_scenarios(sim: Simulation) -> List[merlin.Scenario]:
+    # adds some test scenarios to add to the db
+    # s1 adds some attributes to the simulation
+    # s2 adds some unit types to the simulation.
+    s1_e1 = merlin.Event.create(1, "+ Attribute foo bar baz")
+    s2_e1 = merlin.Event.create(1, "+ UnitType snickers_bars")
+    s1 = merlin.Scenario(sim, events={s1_e1})
+
+
 
 class EntityModelTest(TestCase):
 
@@ -79,8 +89,6 @@ class EntityModelTest(TestCase):
         e = Entity.objects.all()[0]
         self.assertIsNone(e.display_pos_x)
         self.assertIsNone(e.display_pos_y)
-        print(e.attributes)
-
         request = self.client.get('/api/entities/{0}/'.format(e.id))
         j = json.loads(request.content.decode("utf-8"))
         j['display_pos_x'] = 1000.0
@@ -430,8 +438,8 @@ class ScenarioAndEventTest(TestCase):
             "Entity {0} := Property {1}, 2.0".format(e.id, prop.id))
 
         self.merlin_scenario = merlin.Scenario(
-            self.test_sim,
             {self.merlin_event},
+            sim= self.test_sim,
             name="My Test Scenario")
 
 
