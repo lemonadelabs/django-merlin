@@ -1,13 +1,11 @@
-import logging
 import importlib
+import logging
 from typing import MutableSequence, Mapping, Any, List
 
-import pymerlin
+from pymerlin.processes import *
 
 from merlin_api import models
-from merlin_api.models import Simulation, Scenario
-from pymerlin import merlin
-from pymerlin.processes import *
+from merlin_api.models import Simulation
 
 logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
@@ -59,10 +57,9 @@ def pymerlin_scenario2django(
     for e in scenario.events:
         de = models.Event()
         de.scenario = ds
-        de.actions = e.actions
+        de.actions = [a.serialize() for a in e.actions]
         de.time = e.time
         de.save()
-
     return ds
 
 
@@ -80,15 +77,17 @@ def django_scenario2pymerlin(
     s = merlin.Scenario(sim, set())
     s.id = scenario.id
     s.name = scenario.name
+    s.events = set()
 
-    p_events = set()
     for e in scenario.events.all():
-        p_event = merlin.Event.create(e.time, e.actions)
+        print(e.actions)
+        p_event = merlin.Event.create_from_dict(e.time, e.actions)
+        for a in p_event.actions:
+            print(a)
         p_event.id = e.id
         p_event.name = e.name
-        p_events.add(p_event)
+        s.events.add(p_event)
 
-    s.events = p_events
     return s
 
 
@@ -226,8 +225,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
 
-        t_o = len(mentities[e.id].outputs)
-
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
             mproc = mentities[e.id].create_process(
@@ -259,11 +256,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 mpprop.min_val = pprop.min_value
                 mpprop.set_value(pprop.property_value)
 
-        t_o2 = len(mentities[e.id].outputs)
-        assert t_o == t_o2
-
     # rewrite input and output connector ids
-
     for dso in sim.outputs.all():
         for di in dso.inputs.all():
             for i in moutputs[dso.id].inputs:

@@ -417,6 +417,11 @@ class ScenarioAndEventTest(TestCase):
         # Create some test scenario and events
         self.test_sim = create_test_simulation()
 
+        # save to db and retrieve to get db ids
+        dsim = pymerlin_adapter.pymerlin2django(self.test_sim)
+        self.django_sim = Simulation.objects.get(pk=dsim)
+        self.test_sim = pymerlin_adapter.django2pymerlin(self.django_sim)
+
         e = self.test_sim.get_entity_by_name('call center')
         p = e.get_process_by_name('Call Center Staff')
         prop = p.get_prop('staff salary')
@@ -445,11 +450,18 @@ class ScenarioAndEventTest(TestCase):
             self.merlin_scenario.start_offset)
         devent = dscenario.events.all()[0]
         self.assertEqual(devent.time, self.merlin_event.time)
-        self.assertEqual(devent.actions[0], self.merlin_event.actions[0])
 
 
     def test_deserialize_and_run(self):
-        pass
+        pymerlin_adapter.pymerlin_scenario2django(
+            self.merlin_scenario,
+            self.django_sim)
+        dscenario = Scenario.objects.all()[0]
+        result= pymerlin_adapter.run_simulation(
+            self.django_sim,
+            [dscenario])
+        print(result)
+
 
 
 
