@@ -9,7 +9,7 @@ class SimObject(models.Model):
         abstract = True
 
     name = models.CharField(max_length=128)
-    description = models.CharField(max_length=255, default="", null=True)
+    description = models.CharField(max_length=255, null=True)
 
 
 class Simulation(SimObject):
