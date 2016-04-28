@@ -1,7 +1,6 @@
 import importlib
 import logging
 from typing import MutableSequence, Mapping, Any, List
-
 from pymerlin.processes import *
 from merlin_api import models
 from merlin_api.models import Simulation
@@ -76,7 +75,7 @@ def django_scenario2pymerlin(
     :return: The merlin.Scenario representation
     """
 
-    s = merlin.Scenario(sim, set())
+    s = merlin.Scenario(set(), sim=sim)
     s.id = scenario.id
     s.name = scenario.name
     s.events = set()
