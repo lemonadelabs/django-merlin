@@ -24,6 +24,7 @@ class ScenarioSerializer(serializers.HyperlinkedModelSerializer):
         model = Scenario
         fields = (
             'id',
+            'name',
             'sim',
             'start_offset',
             'events'
