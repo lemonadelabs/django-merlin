@@ -3,7 +3,6 @@ from django.test import TestCase
 from . import pymerlin_adapter
 from .models import *
 from pymerlin.processes import *
-from pymerlin import actions
 from examples import RecordStorageFacility
 import json
 

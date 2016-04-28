@@ -3,7 +3,6 @@ import logging
 from typing import MutableSequence, Mapping, Any, List
 
 from pymerlin.processes import *
-
 from merlin_api import models
 from merlin_api.models import Simulation
 

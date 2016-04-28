@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import pymerlin_adapter
-
 from .serializers import *
 from .models import *
 
@@ -23,8 +22,32 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
         except ValueError:
             steps_arg = -1
 
+        scenarios = list()
+
+        # parse scenario tag
+        scenario_arg = request.query_params.get('scenarios', 'none')
+        if scenario_arg == 'all':
+            scenarios = Scenario.objects.all()
+
+        # parse scenario filters
+        i = 0
+        k = 's' + str(i)
+        while k in request.query_params:
+            s_id = request.query_params[k]
+            i += 1
+            k = 's' + str(i)
+            try:
+                s_id = int(s_id)
+                scenario = Scenario.objects.get(pk=s_id)
+                scenarios.append(scenario)
+            except ValueError:
+                continue
+
         sim = get_object_or_404(self.get_queryset(), pk=pk)
-        result = pymerlin_adapter.run_simulation(sim, steps=steps_arg)
+        result = pymerlin_adapter.run_simulation(
+            sim,
+            steps=steps_arg,
+            scenarios=scenarios)
         return Response(result)
 
 
@@ -34,9 +57,11 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventsSerializer
 
+
 class ScenarioViewSet(viewsets.ModelViewSet):
     queryset = Scenario.objects.all()
     serializer_class = ScenarioSerializer
+
 
 class SimulationViewSet(viewsets.ModelViewSet):
     queryset = Simulation.objects.all()
