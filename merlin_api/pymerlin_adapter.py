@@ -14,12 +14,15 @@ logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
 def run_simulation(
         sim: models.Simulation,
-        scenarios: List[models.Scenario]=list()) -> \
+        scenarios: List[models.Scenario]=list(),
+        steps: int=-1) -> \
         MutableSequence[Mapping[str, Any]]:
     """
     Runs the supplied simulation and returns the resulting telemetry data
     :param sim:
     :param scenarios: A set of scenarios to run on the sim
+    :param steps: How many steps to run the sim over, default -1 means
+     just use the default setting for the sim
     :return:
     """
 
@@ -32,7 +35,7 @@ def run_simulation(
             m_scenarios.append(ms)
 
     # msim = tests.create_test_simulation()
-    msim.run(scenarios=m_scenarios)
+    msim.run(scenarios=m_scenarios, end=steps)
     return msim.get_sim_telemetry()
 
 

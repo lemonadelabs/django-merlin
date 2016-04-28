@@ -15,8 +15,16 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
     serializer_class = SimulationSerializer
 
     def retrieve(self, request, pk=None):
+
+        # parse steps arg
+        steps_arg = request.query_params.get('steps', -1)
+        try:
+            steps_arg = int(steps_arg)
+        except ValueError:
+            steps_arg = -1
+
         sim = get_object_or_404(self.get_queryset(), pk=pk)
-        result = pymerlin_adapter.run_simulation(sim)
+        result = pymerlin_adapter.run_simulation(sim, steps=steps_arg)
         return Response(result)
 
 
