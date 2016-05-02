@@ -13,7 +13,7 @@ class ProjectPhaseSerializer(serializers.HyperlinkedModelSerializer):
             'project',
             'cost',
             'start',
-            'value'
+            'end'
         )
 
 

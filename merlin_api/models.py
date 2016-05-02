@@ -23,8 +23,8 @@ class ProjectPhase(SimObject):
         on_delete=models.CASCADE,
         related_name='phases')
     cost = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
-    start = models.PositiveIntegerField(default=2016)
-    value = models.PositiveIntegerField(default=1)
+    start = models.DateField(default=datetime.datetime(2016, 1, 1))
+    end = models.DateField(default=datetime.datetime(2016, 4, 1))
 
 
 class Simulation(SimObject):
