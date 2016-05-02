@@ -24,7 +24,7 @@ class ProjectPhase(SimObject):
         related_name='phases')
     cost = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     start = models.PositiveIntegerField(default=2016)
-    end = models.PositiveIntegerField(default=1)
+    value = models.PositiveIntegerField(default=1)
 
 
 class Simulation(SimObject):
