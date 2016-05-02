@@ -1,7 +1,34 @@
-from nis import match
-
 from rest_framework import serializers
 from .models import *
+
+
+class ProjectPhaseSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = ProjectPhase
+        fields = (
+            'id',
+            'name',
+            'description',
+            'project',
+            'cost',
+            'start',
+            'end'
+        )
+
+
+class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+
+    phases = ProjectPhaseSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Project
+        fields = (
+            'id',
+            'name',
+            'description',
+            'phases'
+        )
 
 
 class EventsSerializer(serializers.HyperlinkedModelSerializer):

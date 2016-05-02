@@ -53,6 +53,16 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
 
 # Model view sets
 
+class ProjectPhaseViewSet(viewsets.ModelViewSet):
+    queryset = ProjectPhase.objects.all()
+    serializer_class = ProjectPhaseSerializer
+
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventsSerializer

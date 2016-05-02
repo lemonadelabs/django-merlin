@@ -12,6 +12,21 @@ class SimObject(models.Model):
     description = models.CharField(max_length=255, null=True)
 
 
+class Project(SimObject):
+    pass
+
+
+class ProjectPhase(SimObject):
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='phases')
+    cost = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+    start = models.PositiveIntegerField(default=2016)
+    end = models.PositiveIntegerField(default=1)
+
+
 class Simulation(SimObject):
     num_steps = models.PositiveIntegerField(default=1)
     start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
