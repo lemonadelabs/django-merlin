@@ -48,7 +48,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get(
             'description', instance.description)
-
+        instance.save()
 
         # Update the phase data
 
@@ -78,7 +78,6 @@ class ProjectSerializer(serializers.ModelSerializer):
             if cd_id not in update_data:
                 current_data[cd_id].delete()
 
-        instance.save()
         return instance
 
 
