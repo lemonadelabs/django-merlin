@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from .models import *
 
+import logging
+logger = logging.getLogger('django')
 
-class ProjectPhaseSerializer(serializers.HyperlinkedModelSerializer):
 
+class ProjectPhaseSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = ProjectPhase
         fields = (
@@ -17,18 +20,66 @@ class ProjectPhaseSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
 
-    phases = ProjectPhaseSerializer(many=True, read_only=True)
+    phases = ProjectPhaseSerializer(many=True)
 
     class Meta:
         model = Project
+
         fields = (
             'id',
             'name',
             'description',
             'phases'
         )
+
+    def create(self, validated_data):
+        phase_data = validated_data.pop('phases')
+        project = Project.objects.create(**validated_data)
+        for phase in phase_data:
+            phase['project'] = project
+            ProjectPhase.objects.create(**phase)
+        return project
+
+    def update(self, instance, validated_data):
+        # Update the project data
+        instance.id = validated_data.get('id', instance.id)
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get(
+            'description', instance.description)
+
+
+        # Update the phase data
+
+        update_data = { pd.get('id') : pd  for pd in validated_data.pop('phases')}
+        current_data ={ p.id: p for p in instance.phases.all() }
+
+        # update and create
+        for ud_id in update_data.keys():
+            if ud_id in current_data:
+                # update
+                phase = current_data[ud_id]  # type: ProjectPhase
+                phase_data = update_data[ud_id]
+                phase_data['project'] = instance.id
+
+                pps = ProjectPhaseSerializer(instance=phase, data=phase_data)
+                if pps.is_valid(raise_exception=True):
+                    pps.save()
+            else:
+                # create
+                update_data[ud_id]['project'] = instance.id
+                pps = ProjectPhaseSerializer(data=update_data[ud_id])
+                if pps.is_valid(raise_exception=True):
+                    pps.save()
+
+        # delete
+        for cd_id in current_data.keys():
+            if cd_id not in update_data:
+                current_data[cd_id].delete()
+
+        instance.save()
+        return instance
 
 
 class EventsSerializer(serializers.HyperlinkedModelSerializer):

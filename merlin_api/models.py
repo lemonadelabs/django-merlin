@@ -8,8 +8,8 @@ class SimObject(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(max_length=128)
-    description = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=128, default="", null=True)
+    description = models.CharField(max_length=255, default="", null=True)
 
 
 class Project(SimObject):
@@ -21,8 +21,8 @@ class ProjectPhase(SimObject):
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
-        related_name='phases')
-    cost = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+        related_name='phases', null=True)
+    cost = models.IntegerField(default=0)
     start = models.DateField(default=datetime.datetime(2016, 1, 1))
     end = models.DateField(default=datetime.datetime(2016, 4, 1))
 
