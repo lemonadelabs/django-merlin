@@ -31,7 +31,11 @@ class ProjectSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'phases'
+            'phases',
+            'priority',
+            'type',
+            'is_ringfenced',
+            'is_active'
         )
 
     def create(self, validated_data):

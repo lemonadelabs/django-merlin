@@ -13,7 +13,11 @@ class SimObject(models.Model):
 
 
 class Project(SimObject):
-    pass
+
+    priority = models.PositiveIntegerField(default=1)
+    type = models.CharField(max_length=128, default="", null=True)
+    is_ringfenced = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
 
 class ProjectPhase(SimObject):
