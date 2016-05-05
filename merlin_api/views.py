@@ -98,6 +98,15 @@ class EntityViewSet(viewsets.ModelViewSet):
     queryset = Entity.objects.all()
     serializer_class = EntitySerializer
 
+    def get_queryset(self):
+        queryset = self.queryset
+        # parse attribute filters
+        if 'a' in self.request.query_params:
+            attrs = self.request.query_params.copy().pop('a')
+            queryset = queryset.filter(attributes__contains=attrs)
+
+        return queryset
+
 
 class OutputConnectorViewSet(viewsets.ModelViewSet):
     queryset = OutputConnector.objects.all()
