@@ -7,6 +7,7 @@ logger = logging.getLogger('django')
 
 class ProjectPhaseSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
+
     class Meta:
         model = ProjectPhase
         fields = (
@@ -35,7 +36,8 @@ class ProjectSerializer(serializers.ModelSerializer):
             'priority',
             'type',
             'is_ringfenced',
-            'is_active'
+            'is_active',
+            'scenario'
         )
 
     def create(self, validated_data):
@@ -52,12 +54,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get(
             'description', instance.description)
+        instance.scenario = validated_data.get('scenario', instance.scenario)
         instance.save()
 
         # Update the phase data
-
-        update_data = { pd.get('id') : pd  for pd in validated_data.pop('phases')}
-        current_data ={ p.id: p for p in instance.phases.all() }
+        update_data = {
+            pd.get('id'): pd for pd in validated_data.pop('phases')}
+        current_data = {p.id: p for p in instance.phases.all()}
 
         # update and create
         for ud_id in update_data.keys():

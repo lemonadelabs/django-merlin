@@ -12,25 +12,6 @@ class SimObject(models.Model):
     description = models.CharField(max_length=255, default="", null=True)
 
 
-class Project(SimObject):
-
-    priority = models.PositiveIntegerField(default=1)
-    type = models.CharField(max_length=128, default="", null=True)
-    is_ringfenced = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-
-
-class ProjectPhase(SimObject):
-
-    project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE,
-        related_name='phases', null=True)
-    cost = models.IntegerField(default=0)
-    start = models.DateField(default=datetime.datetime(2016, 1, 1))
-    end = models.DateField(default=datetime.datetime(2016, 4, 1))
-
-
 class Simulation(SimObject):
     num_steps = models.PositiveIntegerField(default=1)
     start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
@@ -255,3 +236,27 @@ class Event(SimObject):
         related_name='events')
     time = models.PositiveIntegerField(default=1)
     actions = JSONField(default=list())
+
+
+class Project(SimObject):
+
+    priority = models.PositiveIntegerField(default=1)
+    type = models.CharField(max_length=128, default="", null=True)
+    scenario = models.ForeignKey(
+        Scenario,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='projects')
+    is_ringfenced = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+
+class ProjectPhase(SimObject):
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='phases', null=True)
+    cost = models.IntegerField(default=0)
+    start = models.DateField(default=datetime.datetime(2016, 1, 1))
+    end = models.DateField(default=datetime.datetime(2016, 4, 1))
