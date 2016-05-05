@@ -242,7 +242,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'sim',
             'unit_type',
-            'target',
+            'minimum',
             'deliver_date',
             'display_pos_x',
             'display_pos_y')

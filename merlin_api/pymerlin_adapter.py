@@ -177,6 +177,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     for o in sim.outputs.all():
         moutput = merlin.Output(o.unit_type.value, name=o.name)
         moutput.id = o.id
+        moutput.minimum = o.minimum
         moutputs[o.id] = moutput
         msim.add_output(moutput)
 
@@ -321,6 +322,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
         doutput.sim = dsim
         assert o.sim is not None
         doutput.unit_type = ut_map[o.type]
+        doutput.minimum = o.minimum
         doutput.save()
         output_map[o.id] = doutput
 

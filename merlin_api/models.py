@@ -41,7 +41,7 @@ class Output(SimObject):
     sim = models.ForeignKey(
         Simulation, on_delete=models.CASCADE, related_name='outputs')
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
-    target = models.FloatField(null=True)
+    minimum = models.FloatField(null=True)
     deliver_date = models.DateField(null=True)
     display_pos_x = models.FloatField(null=True)
     display_pos_y = models.FloatField(null=True)
@@ -52,6 +52,7 @@ class Output(SimObject):
             id: {5}
             sim: {1}
             unit_type: {2}
+            minimum: {6}
             display_pos_x: {3}
             display_pos_y: {4}
         """.format(
@@ -60,7 +61,8 @@ class Output(SimObject):
                 self.unit_type,
                 self.display_pos_x,
                 self.display_pos_y,
-                self.id)
+                self.id,
+                self.minimum)
 
 
 class Entity(SimObject):
