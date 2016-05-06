@@ -34,7 +34,6 @@ def run_simulation(
 
     # msim = tests.create_test_simulation()
     msim.run(scenarios=m_scenarios, end=steps)
-    msim.run(scenarios=m_scenarios, end=steps)
     return msim.get_sim_telemetry()
 
 
