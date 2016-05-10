@@ -16,9 +16,11 @@ class ProjectPhaseSerializer(serializers.ModelSerializer):
             'description',
             'project',
             'scenario',
-            'cost',
-            'start',
-            'end'
+            'investment_cost',
+            'service_cost',
+            'start_date',
+            'end_date',
+            'is_active'
         )
 
 
@@ -37,7 +39,9 @@ class ProjectSerializer(serializers.ModelSerializer):
             'priority',
             'type',
             'is_ringfenced',
-            'is_active'
+            'achievability',
+            'attractiveness',
+            'dependencies'
         )
 
     def create(self, validated_data):
@@ -48,12 +52,16 @@ class ProjectSerializer(serializers.ModelSerializer):
             ProjectPhase.objects.create(**phase)
         return project
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Project, validated_data):
         # Update the project data
         instance.id = validated_data.get('id', instance.id)
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get(
             'description', instance.description)
+        instance.achievability = validated_data.get('achievability', instance.achievability)
+        instance.attractiveness = validated_data.get('attractiveness', instance.attractiveness)
+        instance.is_ringfenced = validated_data.get('is_ringfenced', instance.is_ringfenced)
+        instance.dependencies = validated_data.get('dependencies', instance.dependencies)
         instance.save()
 
         # Update the phase data

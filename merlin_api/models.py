@@ -245,7 +245,12 @@ class Project(SimObject):
     priority = models.PositiveIntegerField(default=1)
     type = models.CharField(max_length=128, default="", null=True)
     is_ringfenced = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    achievability = models.IntegerField(default=0)
+    attractiveness = models.IntegerField(default=0)
+    dependencies = models.ManyToManyField(
+        'self',
+        related_name='required_by',
+        symmetrical=False)
 
 
 class ProjectPhase(SimObject):
@@ -259,6 +264,8 @@ class ProjectPhase(SimObject):
         on_delete=models.SET_NULL,
         null=True,
         related_name='project_phases')
-    cost = models.IntegerField(default=0)
-    start = models.DateField(default=datetime.datetime(2016, 1, 1))
-    end = models.DateField(default=datetime.datetime(2016, 4, 1))
+    investment_cost = models.IntegerField(default=0)
+    service_cost = models.IntegerField(default=0)
+    start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
+    end_date = models.DateField(default=datetime.datetime(2016, 4, 1))
+    is_active = models.BooleanField(default=True)
