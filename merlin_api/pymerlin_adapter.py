@@ -29,7 +29,13 @@ def run_simulation(
 
     if scenarios:
         for ds in scenarios:
-            ms = django_scenario2pymerlin(ds, msim)
+            try:
+                ms = django_scenario2pymerlin(ds, msim)
+            except ValueError as e:
+                error_dict = dict()
+                error_dict['scenario'] = list()
+                error_dict['scenario'].append(str(e))
+                return error_dict
             m_scenarios.append(ms)
 
     # msim = tests.create_test_simulation()
@@ -81,7 +87,7 @@ def django_scenario2pymerlin(
     s.events = set()
 
     for e in scenario.events.all():
-        print(e.actions)
+        # print(e.actions)
         p_event = merlin.Event.create_from_dict(e.time, e.actions)
         for a in p_event.actions:
             print(a)

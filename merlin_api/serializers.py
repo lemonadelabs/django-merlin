@@ -58,10 +58,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get(
             'description', instance.description)
-        instance.achievability = validated_data.get('achievability', instance.achievability)
-        instance.attractiveness = validated_data.get('attractiveness', instance.attractiveness)
-        instance.is_ringfenced = validated_data.get('is_ringfenced', instance.is_ringfenced)
-        instance.dependencies = validated_data.get('dependencies', instance.dependencies)
+        instance.achievability = validated_data.get(
+            'achievability',
+            instance.achievability)
+        instance.attractiveness = validated_data.get(
+            'attractiveness',
+            instance.attractiveness)
+        instance.is_ringfenced = validated_data.get(
+            'is_ringfenced',
+            instance.is_ringfenced)
+        instance.dependencies = validated_data.get(
+            'dependencies',
+            instance.dependencies)
         instance.save()
 
         # Update the phase data

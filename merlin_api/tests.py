@@ -8,7 +8,6 @@ import json
 
 def create_test_simulation() -> merlin.Simulation:
     sim = merlin.Simulation(
-        ruleset=None,
         config=[],
         outputs=set(),
         name='test_sim')
@@ -443,6 +442,28 @@ class ScenarioAndEventTest(TestCase):
             sim= self.test_sim,
             name="My Test Scenario")
 
+    def test_malformed_pp_value(self):
+        self.merlin_scenario.events.clear()
+        e = self.test_sim.get_entity_by_name('call center')
+        p = e.get_process_by_name('Call Center Staff')
+        malformed_action = dict()
+        malformed_action['op'] = ':='
+        malformed_action['operand_1'] = {
+            'type': "Entity",
+            'params': [e.id],
+            'props': None
+        }
+        malformed_action['operand_2'] = {
+            'type': "Property",
+            'params': [p.id, '-'],
+            'props': None
+        }
+        with self.assertRaises(ValueError):
+            self.merlin_event = merlin.Event.create_from_dict(1,[malformed_action])
+
+
+    def test_invalid_action_data(self):
+        pass
 
     def test_scenario_serialization(self):
         dsim_id = pymerlin_adapter.pymerlin2django(self.test_sim)
