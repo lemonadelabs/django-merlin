@@ -220,7 +220,9 @@ class ProcessProperty(SimObject):
     default_value = models.FloatField(default=0.0)
     max_value = models.FloatField(null=True)
     min_value = models.FloatField(null=True)
+    readonly = models.BooleanField(default=False)
     property_value = models.FloatField()
+
 
 
 class Scenario(SimObject):

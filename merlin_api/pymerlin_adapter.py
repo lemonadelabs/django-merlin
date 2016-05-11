@@ -264,6 +264,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 mpprop.id = pprop.id
                 mpprop.max_val = pprop.max_value
                 mpprop.min_val = pprop.min_value
+                mpprop.readonly = pprop.readonly
                 mpprop.set_value(pprop.property_value)
 
     # rewrite input and output connector ids
@@ -434,6 +435,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
             for ps in pps:
                 dps = models.ProcessProperty()
                 dps.name = ps.name
+                dps.readonly = ps.readonly
                 dps.process = dprocess
                 dps.property_type = ps.type.value
                 dps.default_value = ps.default

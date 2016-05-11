@@ -190,6 +190,7 @@ class ProcessPropertySerializer(serializers.HyperlinkedModelSerializer):
             'min_value',
             'process',
             'property_type',
+            'readonly',
             'property_value')
 
 
