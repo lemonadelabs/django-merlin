@@ -33,8 +33,10 @@ def run_simulation(
                 ms = django_scenario2pymerlin(ds, msim)
             except ValueError as e:
                 error_dict = dict()
-                error_dict['scenario'] = list()
-                error_dict['scenario'].append(str(e))
+                error_dict['scenario'] = dict()
+                error_dict['scenario']['id'] = ds.id
+                error_dict['scenario']['message'] = list()
+                error_dict['scenario']['message'].append(str(e))
                 return error_dict
             m_scenarios.append(ms)
 
