@@ -258,6 +258,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'sim',
             'unit_type',
+            'attributes',
             'minimum',
             'deliver_date',
             'display_pos_x',

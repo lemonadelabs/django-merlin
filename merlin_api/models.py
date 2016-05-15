@@ -40,6 +40,7 @@ class Attribute(models.Model):
 class Output(SimObject):
     sim = models.ForeignKey(
         Simulation, on_delete=models.CASCADE, related_name='outputs')
+    attributes = ArrayField(models.CharField(max_length=128), default=[])
     unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
     minimum = models.FloatField(null=True)
     deliver_date = models.DateField(null=True)
