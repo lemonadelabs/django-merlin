@@ -93,6 +93,15 @@ class OutputViewSet(viewsets.ModelViewSet):
     queryset = Output.objects.all()
     serializer_class = OutputSerializer
 
+    def get_queryset(self):
+        queryset = self.queryset
+        # parse attribute filters
+        if 'a' in self.request.query_params:
+            attrs = self.request.query_params.copy().pop('a')
+            queryset = queryset.filter(attributes__contains=attrs)
+
+        return queryset
+
 
 class EntityViewSet(viewsets.ModelViewSet):
     queryset = Entity.objects.all()
