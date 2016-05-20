@@ -45,8 +45,7 @@ class Command(BaseCommand):
         for o in sim.outputs.all():
             for pos_data in data:
                 name_match = (pos_data['name'] == o.name)
-                parent_match = (pos_data['parent'] == o.sim.name)
-                if name_match and parent_match:
+                if name_match:
                     o.display_pos_x = pos_data['x']
                     o.display_pos_y = pos_data['y']
                     o.save()

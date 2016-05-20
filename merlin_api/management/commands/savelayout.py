@@ -34,7 +34,6 @@ class Command(BaseCommand):
         for o in sim.outputs.all():
             pos_data = dict()
             pos_data['name'] = o.name
-            pos_data['parent'] = o.sim.name
             pos_data['x'] = o.display_pos_x
             pos_data['y'] = o.display_pos_y
             data.append(pos_data)
