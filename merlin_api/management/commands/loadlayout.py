@@ -31,16 +31,17 @@ class Command(BaseCommand):
         for e in sim.entities.all():
             # Try to find matching positional info
             for pos_data in data:
-                name_match = (pos_data['name'] == e.name)
-                if e.parent is None:
-                    parent_match = (pos_data['parent'] is None)
-                else:
-                    parent_match = (pos_data['parent'] == e.parent.name)
+                if 'parent' in pos_data:
+                    name_match = (pos_data['name'] == e.name)
+                    if e.parent is None:
+                        parent_match = (pos_data['parent'] is None)
+                    else:
+                        parent_match = (pos_data['parent'] == e.parent.name)
 
-                if name_match and parent_match:
-                    e.display_pos_x = pos_data['x']
-                    e.display_pos_y = pos_data['y']
-                    e.save()
+                    if name_match and parent_match:
+                        e.display_pos_x = pos_data['x']
+                        e.display_pos_y = pos_data['y']
+                        e.save()
 
         for o in sim.outputs.all():
             for pos_data in data:
