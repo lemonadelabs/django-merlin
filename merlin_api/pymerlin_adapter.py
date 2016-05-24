@@ -225,6 +225,17 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                         ep.sim_output.additive_write,
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
+
+                    # add endpoint details
+                    op = mentities[e.id].get_output_by_type(o.unit_type.value)
+
+                    # now find the new endpoint connection that has been made
+                    for new_endpoint in op.get_endpoint_objects():
+                        if new_endpoint.connector.parent == moutputs[ep.sim_output.parent.id]:
+                            new_endpoint.id = ep.id
+                            new_endpoint.bias = ep.bias
+                            new_endpoint.name = ep.name
+
                 else:
                     # Connect to another entity
                     msim.connect_entities(
@@ -234,6 +245,17 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                         ep.input.additive_write,
                         merlin.OutputConnector.ApportioningRules(
                             o.apportion_rule))
+
+                    # add endpoint details
+                    op = mentities[e.id].get_output_by_type(o.unit_type.value)
+
+                    # now find the new endpoint connection that has been made
+                    for new_endpoint in op.get_endpoint_objects():
+                        if new_endpoint.connector.parent == mentities[ep.input.parent.id]:
+                            new_endpoint.id = ep.id
+                            new_endpoint.bias = ep.bias
+                            new_endpoint.name = ep.name
+
 
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
@@ -279,15 +301,13 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
             for mout_con in mentities[e.id].outputs:
                 if mout_con.type == o.unit_type.value:
                     mout_con.id = o.id
-                    for ep in o.endpoints.all():
-                        dinput = ep.input
-                        if ep.input:
-                            for mendpoint in mout_con.get_endpoint_objects():
-                                minput = mendpoint.connector
-                                if minput.parent.id == dinput.parent.id:
-                                    minput.id = dinput.id
-                                    mendpoint.id = ep.id
-                                    mendpoint.bias = ep.bias
+                for ep in o.endpoints.all():
+                    dinput = ep.input
+                    if ep.input:
+                        for mendpoint in mout_con.get_endpoint_objects():
+                            minput = mendpoint.connector
+                            if minput.parent.id == dinput.parent.id:
+                                minput.id = dinput.id
 
     return msim
 
