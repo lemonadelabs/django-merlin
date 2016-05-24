@@ -143,7 +143,14 @@ class EndpointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Endpoint
-        fields = ('bias', 'input', 'parent', 'sim_output')
+        fields = (
+            'id',
+            'description',
+            'name',
+            'bias',
+            'input',
+            'parent',
+            'sim_output')
 
 
 class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):

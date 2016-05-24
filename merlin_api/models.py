@@ -167,7 +167,7 @@ class SimOutputConnector(SimObject):
             self.name)
 
 
-class Endpoint(models.Model):
+class Endpoint(SimObject):
     parent = models.ForeignKey(
         OutputConnector, on_delete=models.CASCADE, related_name='endpoints')
     bias = models.FloatField(default=0.0)
