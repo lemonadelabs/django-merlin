@@ -267,7 +267,7 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 mpprop.readonly = pprop.readonly
                 mpprop.set_value(pprop.property_value)
 
-    # rewrite input and output connector ids
+    # rewrite input and output connector ids and apply biases
     for dso in sim.outputs.all():
         for di in dso.inputs.all():
             for i in moutputs[dso.id].inputs:
@@ -279,13 +279,15 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
             for mout_con in mentities[e.id].outputs:
                 if mout_con.type == o.unit_type.value:
                     mout_con.id = o.id
-                for ep in o.endpoints.all():
-                    dinput = ep.input
-                    if ep.input:
-                        for mendpoint in mout_con.get_endpoints():
-                            minput = mendpoint[0]
-                            if minput.parent.id == dinput.parent.id:
-                                minput.id = dinput.id
+                    for ep in o.endpoints.all():
+                        dinput = ep.input
+                        if ep.input:
+                            for mendpoint in mout_con.get_endpoint_objects():
+                                minput = mendpoint.connector
+                                if minput.parent.id == dinput.parent.id:
+                                    minput.id = dinput.id
+                                    mendpoint.id = ep.id
+                                    mendpoint.bias = ep.bias
 
     return msim
 
@@ -407,16 +409,16 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
             i_con.source = source
             i_con.save()
         for o in e.outputs:
-            for ep in o.get_endpoints():
+            for ep in o.get_endpoint_objects():
                 dendpoint = models.Endpoint()
                 dendpoint.parent = output_con_map[o.id]
-                dendpoint.bias = ep[1]
+                dendpoint.bias = ep.bias
                 # print('#### {0}: {1}'.format(ep[0].id, ep[0]))
-                if isinstance(input_con_map[ep[0].id], models.InputConnector):
-                    dendpoint.input = input_con_map[ep[0].id]
+                if isinstance(
+                        input_con_map[ep.connector.id], models.InputConnector):
+                    dendpoint.input = input_con_map[ep.connector.id]
                 else:
-                    dendpoint.sim_output = input_con_map[ep[0].id]
-
+                    dendpoint.sim_output = input_con_map[ep.connector.id]
                 dendpoint.save()
 
     # Create Processes
