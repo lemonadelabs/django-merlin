@@ -253,7 +253,8 @@ class Project(SimObject):
     dependencies = models.ManyToManyField(
         'self',
         related_name='required_by',
-        symmetrical=False)
+        symmetrical=False,
+        default=None)
 
 
 class ProjectPhase(SimObject):
