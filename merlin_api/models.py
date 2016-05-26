@@ -14,7 +14,7 @@ class SimObject(models.Model):
 
 class Simulation(SimObject):
     num_steps = models.PositiveIntegerField(default=1)
-    start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
+    start_date = models.DateField(default=datetime.datetime(2016, 7, 1))
 
 
 class UnitType(models.Model):
