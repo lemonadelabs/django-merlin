@@ -256,7 +256,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                             new_endpoint.bias = ep.bias
                             new_endpoint.name = ep.name
 
-
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
             mproc = mentities[e.id].create_process(
@@ -443,7 +442,16 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
 
     # Create Processes
     for e in sim.get_entities():
+
+        input_names = {i.id: list() for i in e.inputs}
+        output_names = {o.id: list() for o in e.outputs}
+
         for p in e.get_processes():
+            for i in p.inputs.values():
+                input_names[i.connector.id].append(i.name)
+            for o in p.outputs.values():
+                output_names[o.connector.id].append(o.name)
+
             dprocess = models.Process()
             dprocess.parent = entity_map[e.id]
             dprocess.name = p.name
@@ -467,4 +475,13 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
                     dps.min_value = ps.min_val
                 dps.property_value = ps.get_value()
                 dps.save()
+
+        # KLUDGE: In lieu of process input/output db entitites
+        for ik in input_names.keys():
+            input_con_map[ik].description = ','.join(input_names[ik])
+            input_con_map[ik].save()
+        for ok in output_names.keys():
+            output_con_map[ok].description = ','.join(output_names[ok])
+            output_con_map[ok].save()
+
     return dsim.id
