@@ -253,9 +253,25 @@ class AttributeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('sim', 'value')
 
 
+class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
+
+    unit_type = UnitTypeRelatedField(read_only=True)
+
+    class Meta:
+        model = SimOutputConnector
+        fields = (
+            'id',
+            'description',
+            'name',
+            'parent',
+            'unit_type',
+            'additive_write')
+
+
 class OutputSerializer(serializers.HyperlinkedModelSerializer):
 
     unit_type = UnitTypeRelatedField(read_only=True)
+    inputs = SimOutputConnectorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Output
@@ -267,6 +283,7 @@ class OutputSerializer(serializers.HyperlinkedModelSerializer):
             'unit_type',
             'attributes',
             'minimum',
+            'inputs',
             'deliver_date',
             'display_pos_x',
             'display_pos_y')
@@ -295,16 +312,4 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
             'scenarios')
 
 
-class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
 
-    unit_type = UnitTypeRelatedField(read_only=True)
-
-    class Meta:
-        model = SimOutputConnector
-        fields = (
-            'id',
-            'description',
-            'name',
-            'parent',
-            'unit_type',
-            'additive_write')

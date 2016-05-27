@@ -147,7 +147,6 @@ class Pymerlin2DjangoTestCase(TestCase):
         self.assertEqual(self.sim.num_steps, self.dsim.num_steps)
 
     def test_entity_integrity(self):
-
         self.assertEqual(
             len(self.dsim.entities.all()),
             len(self.sim.get_entities()))
@@ -165,6 +164,9 @@ class Pymerlin2DjangoTestCase(TestCase):
             if de.name == 'Budget':
                 self.assertTrue(de.is_source)
                 self.assertTrue(matched_entity in self.sim.source_entities)
+
+    def test_endpoint_to_sim_output_mapping(self):
+        self.assertEqual(len(self.sim.outputs), len(self.dsim.outputs.all()))
 
     def test_entity_output_connections(self):
         for e in self.sim.get_entities():
