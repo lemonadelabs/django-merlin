@@ -24,4 +24,4 @@ class Command(BaseCommand):
         for s in options['scenario_list']:
             pymerlin_adapter.pymerlin_scenario2django(s, sim)
 
-        self.stdout.write("Scenarios added sucessfully!")
+        self.stdout.write("Scenarios added successfully!")
