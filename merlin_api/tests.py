@@ -408,7 +408,7 @@ class Django2PymerlinTestCase(TestCase):
     def test_retrieve_and_run(self):
         # Compare to unserialised model, should be same output
         orig_sim = \
-            RecordStorageFacility.govRecordStorage()  # type merlin.Simulation
+            DIAServicesModel.createRecordStorage()  # type merlin.Simulation
         orig_sim.num_steps = 10
         orig_sim.run()
         self.sim.num_steps = 10
@@ -418,10 +418,12 @@ class Django2PymerlinTestCase(TestCase):
             for oo in orig_sim.outputs:
                 if o.type == oo.type:
                     outputs_compared += 1
+                    # logging.info("output: {0} = {1}".format(o.name, o.result))
+                    # logging.info("output: {0} = {1}".format(oo.name, oo.result))
                     self.assertEqual(len(o.result), len(oo.result))
                     for i in range(0, len(o.result)):
                         self.assertAlmostEqual(o.result[i], oo.result[i])
-        self.assertEqual(outputs_compared, 2)
+        self.assertEqual(outputs_compared, 4)
 
     def test_unique_ids(self):
 
@@ -442,7 +444,7 @@ class Django2PymerlinTestCase(TestCase):
             entity_ids.add(e.id)
 
             for i in e.inputs:
-                self.assertTrue(i.id not in input_ids)
+                self.assertTrue(i.id not in input_ids, 'input: {0}'.format(i))
                 input_ids.add(i.id)
 
             for o in e.outputs:

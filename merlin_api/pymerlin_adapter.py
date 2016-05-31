@@ -289,25 +289,31 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
                 mpprop.readonly = pprop.readonly
                 mpprop.set_value(pprop.property_value)
 
-    # rewrite input and output connector ids and apply biases
-    for dso in sim.outputs.all():
-        for di in dso.inputs.all():
-            for i in moutputs[dso.id].inputs:
-                if i.source.parent.id == di.source.parent.id:
-                    i.id = di.id
+    # rewrite input and output connector ids
+    # for dso in sim.outputs.all():
+    #     for di in dso.inputs.all():
+    #         for i in moutputs[dso.id].inputs:
+    #             if i.source.parent.id == di.source.parent.id:
+    #                 i.id = di.id
 
     for e in sim.entities.all():
         for o in e.outputs.all():
+            # iterate through outputs in matching merlin entity
             for mout_con in mentities[e.id].outputs:
                 if mout_con.type == o.unit_type.value:
+                    # we have found the matching output connector (mout_con <-> o)
+                    # remap id to django id
                     mout_con.id = o.id
-                for ep in o.endpoints.all():
-                    dinput = ep.input
-                    if ep.input:
-                        for mendpoint in mout_con.get_endpoint_objects():
-                            minput = mendpoint.connector
-                            if minput.parent.id == dinput.parent.id:
-                                minput.id = dinput.id
+                    # we now need to remap the input ids
+                    for ep in o.endpoints.all():
+                        # We need to try and find the matching merlin endpoint
+                        for mep in mout_con.get_endpoint_objects():
+                            # matching on endpoint id
+                            if mep.id == ep.id:
+                                if ep.input:
+                                    mep.connector.id = ep.input.id
+                                else:
+                                    mep.connector.id = ep.sim_output.id
 
     return msim
 
