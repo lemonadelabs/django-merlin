@@ -4,6 +4,7 @@ from . import pymerlin_adapter
 from .models import *
 from pymerlin.processes import *
 from examples import RecordStorageFacility
+from examples import DIAServicesModel
 import json
 import logging
 
@@ -273,7 +274,7 @@ class Pymerlin2DjangoTestCase(TestCase):
 class Django2PymerlinTestCase(TestCase):
 
     def setUp(self):
-        s = RecordStorageFacility.govRecordStorage()
+        s = DIAServicesModel.createRecordStorage()
         pymerlin_adapter.pymerlin2django(s)
         self.dsim = Simulation.objects.all()[0]
         self.sim = pymerlin_adapter.django2pymerlin(self.dsim)
@@ -421,6 +422,50 @@ class Django2PymerlinTestCase(TestCase):
                     for i in range(0, len(o.result)):
                         self.assertAlmostEqual(o.result[i], oo.result[i])
         self.assertEqual(outputs_compared, 2)
+
+    def test_unique_ids(self):
+
+        entity_ids = set()
+        input_ids = set()
+        output_ids = set()
+        sim_output_ids = set()
+        process_ids = set()
+        process_property_ids = set()
+
+        for o in self.sim.outputs:
+            self.assertTrue(o.id not in sim_output_ids)
+            sim_output_ids.add(o.id)
+
+        for e in self.sim.get_entities():
+
+            self.assertTrue(e.id not in entity_ids)
+            entity_ids.add(e.id)
+
+            for i in e.inputs:
+                self.assertTrue(i.id not in input_ids)
+                input_ids.add(i.id)
+
+            for o in e.outputs:
+                self.assertTrue(o.id not in output_ids)
+                output_ids.add(o.id)
+
+            for p in e.get_processes():
+                self.assertTrue(p.id not in process_ids)
+                process_ids.add(p.id)
+
+                for pp in p.get_properties():
+                    self.assertTrue(pp.id not in process_property_ids)
+                    process_property_ids.add(pp.id)
+
+
+
+
+
+
+
+
+
+
 
 
 class ScenarioAndEventTest(TestCase):

@@ -86,6 +86,7 @@ def django_scenario2pymerlin(
     s = merlin.Scenario(set(), sim=sim)
     s.id = scenario.id
     s.name = scenario.name
+    s.start_offset = scenario.start_offset
     s.events = set()
 
     for e in scenario.events.all():
