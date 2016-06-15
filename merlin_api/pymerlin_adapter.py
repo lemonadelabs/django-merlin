@@ -175,12 +175,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     msim.set_time_span(sim.num_steps)
     msim.name = sim.name
 
-    # Attributes
-    msim.add_attributes([a.value for a in sim.attributes.all()])
-
-    # Unit Types
-    msim.add_unit_types([u.value for u in sim.unittypes.all()])
-
     # Outputs
     moutputs = dict()
     for o in sim.outputs.all():
