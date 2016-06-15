@@ -92,8 +92,6 @@ def django_scenario2pymerlin(
     for e in scenario.events.all():
         # print(e.actions)
         p_event = merlin.Event.create_from_dict(e.time, e.actions)
-        for a in p_event.actions:
-            print(a)
         p_event.id = e.id
         p_event.name = e.name
         s.events.add(p_event)
