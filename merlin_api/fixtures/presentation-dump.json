@@ -1091,15 +1091,15 @@
     "process_class": "examples.DIAServicesModel.StaffProcess",
     "parameters": {
       "default_avg_line_salary": 60000.0,
-      "default_oh_staff_no": 10,
-      "default_line_staff_no": 100,
       "default_hours_training": 100,
-      "default_avg_oh_salary": 75000.0,
+      "default_oh_staff_no": 10,
       "default_leave_percent": 20,
-      "name": "line staff resource process",
+      "default_hours_per_week": 40.0,
+      "default_avg_oh_salary": 75000.0,
+      "default_line_staff_no": 100,
       "default_span_of_control": 12,
-      "default_admin_training_percent": 20,
-      "default_hours_per_week": 40.0
+      "name": "line staff resource process",
+      "default_admin_training_percent": 20
     }
   }
 },
@@ -1113,9 +1113,9 @@
     "priority": 100,
     "process_class": "pymerlin.processes.BudgetProcess",
     "parameters": {
-      "name": "rent budget",
+      "budget_type": "rent$",
       "start_amount": 18000000.0,
-      "budget_type": "rent$"
+      "name": "rent budget"
     }
   }
 },
@@ -1129,12 +1129,12 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.ICTDesktopContract",
     "parameters": {
-      "contract_ohwork_hr": 0,
-      "actual_desktops": 0,
-      "contract_duration": 6,
-      "min_contract_no": 0,
       "base_contract_costs": 0,
-      "cost_per_extra_desktop": 0
+      "min_contract_no": 0,
+      "actual_desktops": 0,
+      "cost_per_extra_desktop": 0,
+      "contract_ohwork_hr": 0,
+      "contract_duration": 6
     }
   }
 },
@@ -1148,11 +1148,11 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.StaffAccommodationProcess",
     "parameters": {
-      "name": "staff accommodation",
       "default_cost_m2": 400,
-      "default_area_per_staff_m2": 15.0,
+      "default_area_m2": 1650,
       "default_lease_term": 5,
-      "default_area_m2": 1650
+      "default_area_per_staff_m2": 15.0,
+      "name": "staff accommodation"
     }
   }
 },
@@ -1166,13 +1166,13 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.InternalICTDesktopService",
     "parameters": {
-      "financial_charge_percent": 8,
+      "maint_cost_per_desktop": 400.0,
+      "life_time": 6,
       "actual_desktops": 110,
       "it_hrs_per_desktop": 40.0,
       "acq_cost_per_desktop": 4000.0,
-      "maint_cost_per_desktop": 400.0,
-      "life_time": 6,
-      "depr_period": 4
+      "depr_period": 4,
+      "financial_charge_percent": 8
     }
   }
 },
@@ -1186,9 +1186,9 @@
     "priority": 100,
     "process_class": "pymerlin.processes.BudgetProcess",
     "parameters": {
-      "name": "staff budget",
+      "budget_type": "staff$",
       "start_amount": 73000000.0,
-      "budget_type": "staff$"
+      "name": "staff budget"
     }
   }
 },
@@ -1202,9 +1202,9 @@
     "priority": 100,
     "process_class": "pymerlin.processes.BudgetProcess",
     "parameters": {
-      "name": "other budget",
+      "budget_type": "other$",
       "start_amount": 800000.0,
-      "budget_type": "other$"
+      "name": "other budget"
     }
   }
 },
@@ -1218,10 +1218,10 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.RegistrationServiceProcess",
     "parameters": {
-      "default_applications_submitted": 1000000.0,
-      "name": "registration facility process",
       "default_registration_fee": 85.0,
-      "default_applications_processed_per_lswork_hr": 10
+      "default_applications_processed_per_lswork_hr": 10,
+      "default_applications_submitted": 1000000.0,
+      "name": "registration facility process"
     }
   }
 },
@@ -2700,7 +2700,7 @@
     "service_cost": 250000,
     "start_date": "2017-10-01",
     "end_date": "2018-06-30",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2715,7 +2715,7 @@
     "service_cost": 100000,
     "start_date": "2016-07-01",
     "end_date": "2016-12-31",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2730,7 +2730,7 @@
     "service_cost": 150000,
     "start_date": "2018-10-01",
     "end_date": "2019-06-30",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2745,7 +2745,7 @@
     "service_cost": 800000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2760,7 +2760,7 @@
     "service_cost": 10000000,
     "start_date": "2017-07-01",
     "end_date": "2017-12-31",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2775,7 +2775,7 @@
     "service_cost": 5000000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2790,7 +2790,7 @@
     "service_cost": 3000000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2805,7 +2805,7 @@
     "service_cost": 300000,
     "start_date": "2016-07-01",
     "end_date": "2016-12-31",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2820,7 +2820,7 @@
     "service_cost": 400000,
     "start_date": "2017-04-01",
     "end_date": "2017-12-31",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2835,7 +2835,7 @@
     "service_cost": 10000000,
     "start_date": "2017-01-01",
     "end_date": "2017-12-31",
-    "is_active": false
+    "is_active": true
   }
 },
 {
@@ -2850,7 +2850,7 @@
     "service_cost": 10000,
     "start_date": "2016-10-01",
     "end_date": "2017-06-30",
-    "is_active": false
+    "is_active": true
   }
 }
 ]
