@@ -10,7 +10,22 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
     """
     Runs a merlin simulation and returns the telemetry result.
     """
-    queryset = Simulation.objects.all()
+    queryset = Simulation.objects.prefetch_related("entities", "outputs",
+                                                 "outputs__inputs",
+                                                 "unittypes", "attributes",
+                                                 "entities__parent",
+                                                 "entities__children",
+                                                 "entities__outputs",
+                                                 "entities__outputs__unit_type",
+                                                 "entities__outputs__endpoints",
+                                                 "entities__outputs__endpoints__input",
+                                                 "entities__outputs__endpoints__sim_output",
+                                                 "entities__inputs",
+                                                 "entities__inputs__unit_type",
+                                                 "entities__inputs__source",
+                                                 "entities__processes",
+                                                 "entities__processes__properties",
+                                                 )
     serializer_class = SimulationSerializer
 
     def retrieve(self, request, pk=None):
@@ -38,12 +53,15 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
             k = 's' + str(i)
             try:
                 s_id = int(s_id)
-                scenario = Scenario.objects.get(pk=s_id)
+                scenario = Scenario.objects.prefetch_related("events",
+                                                             "sim",
+                                                             ).get(pk=s_id)
                 scenarios.append(scenario)
             except ValueError:
                 continue
 
         sim = get_object_or_404(self.get_queryset(), pk=pk)
+
         result = pymerlin_adapter.run_simulation(
             sim,
             steps=steps_arg,
