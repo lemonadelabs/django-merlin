@@ -20,7 +20,8 @@ class ProjectPhaseSerializer(serializers.ModelSerializer):
             'service_cost',
             'start_date',
             'end_date',
-            'is_active'
+            'is_active',
+            'capitalization'
         )
 
 

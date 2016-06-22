@@ -273,3 +273,4 @@ class ProjectPhase(SimObject):
     start_date = models.DateField(default=datetime.datetime(2016, 1, 1))
     end_date = models.DateField(default=datetime.datetime(2016, 4, 1))
     is_active = models.BooleanField(default=True)
+    capitalization = models.FloatField(default=0.0)
