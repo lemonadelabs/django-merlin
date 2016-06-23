@@ -1090,16 +1090,16 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.StaffProcess",
     "parameters": {
-      "default_avg_line_salary": 60000.0,
       "default_hours_training": 100,
+      "default_line_staff_no": 100,
+      "name": "line staff resource process",
+      "default_admin_training_percent": 20,
       "default_oh_staff_no": 10,
+      "default_avg_oh_salary": 75000.0,
       "default_leave_percent": 20,
       "default_hours_per_week": 40.0,
-      "default_avg_oh_salary": 75000.0,
-      "default_line_staff_no": 100,
-      "default_span_of_control": 12,
-      "name": "line staff resource process",
-      "default_admin_training_percent": 20
+      "default_avg_line_salary": 60000.0,
+      "default_span_of_control": 12
     }
   }
 },
@@ -1129,12 +1129,12 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.ICTDesktopContract",
     "parameters": {
-      "base_contract_costs": 0,
-      "min_contract_no": 0,
+      "contract_duration": 6,
       "actual_desktops": 0,
       "cost_per_extra_desktop": 0,
+      "base_contract_costs": 0,
       "contract_ohwork_hr": 0,
-      "contract_duration": 6
+      "min_contract_no": 0
     }
   }
 },
@@ -1148,11 +1148,11 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.StaffAccommodationProcess",
     "parameters": {
-      "default_cost_m2": 400,
-      "default_area_m2": 1650,
       "default_lease_term": 5,
-      "default_area_per_staff_m2": 15.0,
-      "name": "staff accommodation"
+      "name": "staff accommodation",
+      "default_area_m2": 1650,
+      "default_cost_m2": 400,
+      "default_area_per_staff_m2": 15.0
     }
   }
 },
@@ -1167,12 +1167,12 @@
     "process_class": "examples.DIAServicesModel.InternalICTDesktopService",
     "parameters": {
       "maint_cost_per_desktop": 400.0,
-      "life_time": 6,
       "actual_desktops": 110,
-      "it_hrs_per_desktop": 40.0,
-      "acq_cost_per_desktop": 4000.0,
       "depr_period": 4,
-      "financial_charge_percent": 8
+      "acq_cost_per_desktop": 4000.0,
+      "life_time": 6,
+      "financial_charge_percent": 8,
+      "it_hrs_per_desktop": 40.0
     }
   }
 },
@@ -1218,10 +1218,10 @@
     "priority": 100,
     "process_class": "examples.DIAServicesModel.RegistrationServiceProcess",
     "parameters": {
-      "default_registration_fee": 85.0,
+      "name": "registration facility process",
       "default_applications_processed_per_lswork_hr": 10,
       "default_applications_submitted": 1000000.0,
-      "name": "registration facility process"
+      "default_registration_fee": 85.0
     }
   }
 },
@@ -1845,43 +1845,43 @@
     "time": 1,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             -1
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             9,
             -1
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -1897,23 +1897,23 @@
     "time": 1,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             -1
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -1929,43 +1929,43 @@
     "time": 1,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             -1
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             9,
             -2
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -1981,23 +1981,23 @@
     "time": 7,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             1
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -2013,183 +2013,183 @@
     "time": 10,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             1
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             9,
             1
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            9
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             29,
             100000
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            9
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            7
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             22,
             -60
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            7
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             12,
             60
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             13,
             150
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             14,
             100000
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             15,
             1000
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             16,
             2000
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -2205,103 +2205,103 @@
     "time": 10,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             6,
             1
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             9,
             2
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            7
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             22,
             -110
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            7
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             9,
             -4
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             12,
             50
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            4
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -2317,63 +2317,63 @@
     "time": 1,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            9
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             29,
             0
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            9
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            8
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             28,
             0
           ],
-          "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            8
-          ],
-          "type": "Entity"
-        }
-      },
-      {
-        "operand_2": {
           "props": {
             "additive": true
           },
+          "type": "Property"
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            3
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
+        "operand_2": {
           "params": [
             10,
             0
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            3
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -2554,23 +2554,23 @@
     "time": 10,
     "actions": [
       {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "props": null,
+          "type": "Entity"
+        },
+        "op": ":=",
         "operand_2": {
-          "props": {
-            "additive": true
-          },
           "params": [
             7,
             3
           ],
+          "props": {
+            "additive": true
+          },
           "type": "Property"
-        },
-        "op": ":=",
-        "operand_1": {
-          "props": null,
-          "params": [
-            1
-          ],
-          "type": "Entity"
         }
       }
     ]
@@ -2700,7 +2700,8 @@
     "service_cost": 250000,
     "start_date": "2017-10-01",
     "end_date": "2018-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2715,7 +2716,8 @@
     "service_cost": 100000,
     "start_date": "2016-07-01",
     "end_date": "2016-12-31",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2730,7 +2732,8 @@
     "service_cost": 150000,
     "start_date": "2018-10-01",
     "end_date": "2019-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2745,7 +2748,8 @@
     "service_cost": 800000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2760,7 +2764,8 @@
     "service_cost": 10000000,
     "start_date": "2017-07-01",
     "end_date": "2017-12-31",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2775,7 +2780,8 @@
     "service_cost": 5000000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2790,7 +2796,8 @@
     "service_cost": 3000000,
     "start_date": "2017-01-01",
     "end_date": "2017-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2805,7 +2812,8 @@
     "service_cost": 300000,
     "start_date": "2016-07-01",
     "end_date": "2016-12-31",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 },
 {
@@ -2820,7 +2828,8 @@
     "service_cost": 400000,
     "start_date": "2017-04-01",
     "end_date": "2017-12-31",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.9
   }
 },
 {
@@ -2835,7 +2844,8 @@
     "service_cost": 10000000,
     "start_date": "2017-01-01",
     "end_date": "2017-12-31",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.95
   }
 },
 {
@@ -2850,7 +2860,8 @@
     "service_cost": 10000,
     "start_date": "2016-10-01",
     "end_date": "2017-06-30",
-    "is_active": true
+    "is_active": true,
+    "capitalization": 0.0
   }
 }
 ]
