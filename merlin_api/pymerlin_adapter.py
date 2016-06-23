@@ -106,7 +106,6 @@ def delete_django_sim(sim_id: int) -> None:
     """
     sim = Simulation.objects.get(pk=sim_id)
     sim.entities.all().delete()
-    sim.outputs.all().delete()
     sim.delete()
 
 
