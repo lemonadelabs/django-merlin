@@ -10,8 +10,7 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
     """
     Runs a merlin simulation and returns the telemetry result.
     """
-    queryset = Simulation.objects.prefetch_related("entities", "outputs",
-                                                 "outputs__inputs",
+    queryset = Simulation.objects.prefetch_related("entities",
                                                  "unittypes", "attributes",
                                                  "entities__parent",
                                                  "entities__children",
@@ -19,10 +18,8 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
                                                  "entities__outputs__unit_type",
                                                  "entities__outputs__endpoints",
                                                  "entities__outputs__endpoints__input",
-                                                 "entities__outputs__endpoints__sim_output",
                                                  "entities__inputs",
                                                  "entities__inputs__unit_type",
-                                                 "entities__inputs__source",
                                                  "entities__processes",
                                                  "entities__processes__properties",
                                                  )
