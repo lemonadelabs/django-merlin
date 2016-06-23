@@ -173,15 +173,6 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     msim.set_time_span(sim.num_steps)
     msim.name = sim.name
 
-    # Outputs
-    moutputs = dict()
-    for o in sim.outputs.all():
-        moutput = merlin.Output(o.unit_type.value, name=o.name)
-        moutput.id = o.id
-        moutput.minimum = o.minimum
-        moutputs[o.id] = moutput
-        msim.add_output(moutput)
-
     # Entities
     smentities = list()
     mentities = dict()
@@ -190,9 +181,12 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
         mentity = merlin.Entity(
             msim,
             name=e.name,
-            attributes=set(e.attributes))
+            attributes=set(e.attributes),
+            is_output=e.is_output
+        )
         if e.is_source:
             smentities.append(mentity)
+
         mentity.id = e.id
         mentities[e.id] = mentity
 
@@ -210,44 +204,24 @@ def django2pymerlin(sim: models.Simulation) -> merlin.Simulation:
     for e in sim.entities.all():
         for o in e.outputs.all():
             for ep in o.endpoints.all():
-                if ep.input is None:
-                    # Connect to an output
-                    msim.connect_output(
-                        mentities[e.id],
-                        moutputs[ep.sim_output.parent.id],
-                        ep.sim_output.additive_write,
-                        merlin.OutputConnector.ApportioningRules(
-                            o.apportion_rule))
+                # Connect to another entity
+                msim.connect_entities(
+                    mentities[e.id],
+                    mentities[ep.input.parent.id],
+                    o.unit_type.value,
+                    ep.input.additive_write,
+                    merlin.OutputConnector.ApportioningRules(
+                        o.apportion_rule))
 
-                    # add endpoint details
-                    op = mentities[e.id].get_output_by_type(o.unit_type.value)
+                # add endpoint details
+                op = mentities[e.id].get_output_by_type(o.unit_type.value)
 
-                    # now find the new endpoint connection that has been made
-                    for new_endpoint in op.get_endpoint_objects():
-                        if new_endpoint.connector.parent == moutputs[ep.sim_output.parent.id]:
-                            new_endpoint.id = ep.id
-                            new_endpoint.bias = ep.bias
-                            new_endpoint.name = ep.name
-
-                else:
-                    # Connect to another entity
-                    msim.connect_entities(
-                        mentities[e.id],
-                        mentities[ep.input.parent.id],
-                        o.unit_type.value,
-                        ep.input.additive_write,
-                        merlin.OutputConnector.ApportioningRules(
-                            o.apportion_rule))
-
-                    # add endpoint details
-                    op = mentities[e.id].get_output_by_type(o.unit_type.value)
-
-                    # now find the new endpoint connection that has been made
-                    for new_endpoint in op.get_endpoint_objects():
-                        if new_endpoint.connector.parent == mentities[ep.input.parent.id]:
-                            new_endpoint.id = ep.id
-                            new_endpoint.bias = ep.bias
-                            new_endpoint.name = ep.name
+                # now find the new endpoint connection that has been made
+                for new_endpoint in op.get_endpoint_objects():
+                    if new_endpoint.connector.parent == mentities[ep.input.parent.id]:
+                        new_endpoint.id = ep.id
+                        new_endpoint.bias = ep.bias
+                        new_endpoint.name = ep.name
 
         for p in e.processes.all():
             mproc_class = get_process_class_from_fullname(p.process_class)
@@ -342,19 +316,6 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
         ut_map[ut] = dut
         dut.save()
 
-    output_map = dict()
-
-    # Outputs
-    for o in sim.outputs:
-        doutput = models.Output()
-        doutput.name = o.name
-        doutput.sim = dsim
-        assert o.sim is not None
-        doutput.unit_type = ut_map[o.type]
-        doutput.minimum = o.minimum
-        doutput.save()
-        output_map[o.id] = doutput
-
     # Entities
     entity_map = dict()
 
@@ -364,6 +325,7 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
         dentity.sim = dsim
         dentity.attributes = list(e.attributes)
         dentity.is_source = (e in sim.source_entities)
+        dentity.is_output = e.is_output
         dentity.save()
         entity_map[e.id] = dentity
 
@@ -397,46 +359,31 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
             doutput_con.save()
             output_con_map[o.id] = doutput_con
 
-    for op in sim.outputs:
-        for i in op.inputs:
-            dinput_con = models.SimOutputConnector()
-            dinput_con.parent = output_map[op.id]
-            dinput_con.additive_write = i.additive_write
-            dinput_con.name = i.name
-            dinput_con.unit_type = ut_map[i.type]
-            dinput_con.source = output_con_map[i.source.id]
-            dinput_con.save()
-            input_con_map[i.id] = dinput_con
-
     # Create Input source references and Endpoint references
     for e in sim.get_entities():
-        for i in e.inputs:
-            i_con = input_con_map[i.id]
-            # Foo
-            if i.source is None:
-                logger.error(
-                    """
-                        Input has no source reference!
-
-                        ENTITY:
-                            {0}
-
-                        INPUT:
-                            {1}""".format(e, i))
-            source = output_con_map[i.source.id]
-            i_con.source = source
-            i_con.save()
+        # for i in e.inputs:
+        #     i_con = input_con_map[i.id]
+        #     # Foo
+        #     if not i.sources:
+        #         logger.error(
+        #             """
+        #                 Input has no source reference!
+        #
+        #                 ENTITY:
+        #                     {0}
+        #
+        #                 INPUT:
+        #                     {1}""".format(e, i))
+        #     source = output_con_map[i.source.id]
+        #     i_con.source = source
+        #     i_con.save()
         for o in e.outputs:
             for ep in o.get_endpoint_objects():
                 dendpoint = models.Endpoint()
                 dendpoint.parent = output_con_map[o.id]
                 dendpoint.bias = ep.bias
                 # print('#### {0}: {1}'.format(ep[0].id, ep[0]))
-                if isinstance(
-                        input_con_map[ep.connector.id], models.InputConnector):
-                    dendpoint.input = input_con_map[ep.connector.id]
-                else:
-                    dendpoint.sim_output = input_con_map[ep.connector.id]
+                dendpoint.input = input_con_map[ep.connector.id]
                 dendpoint.save()
 
     # Create Processes
