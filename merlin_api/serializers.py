@@ -150,8 +150,7 @@ class EndpointSerializer(serializers.ModelSerializer):
             'name',
             'bias',
             'input',
-            'parent',
-            'sim_output')
+            'parent')
 
 
 class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
@@ -236,6 +235,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
             'parent',
             'sim',
             'is_source',
+            'is_output',
             'children',
             'outputs',
             'inputs',
@@ -274,5 +274,4 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
             'unittypes',
             'attributes',
             'entities',
-            'outputs',
             'scenarios')
