@@ -174,6 +174,7 @@ class OutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
 class InputConnectorSerializer(serializers.HyperlinkedModelSerializer):
 
     unit_type = UnitTypeRelatedField(read_only=True)
+    sources = EndpointSerializer(many=True, read_only=True)
 
     class Meta:
         model = InputConnector
@@ -183,7 +184,8 @@ class InputConnectorSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'parent',
             'unit_type',
-            'additive_write')
+            'additive_write',
+            'sources')
 
 
 class ProcessPropertySerializer(serializers.HyperlinkedModelSerializer):
@@ -254,48 +256,11 @@ class AttributeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('sim', 'value')
 
 
-class SimOutputConnectorSerializer(serializers.HyperlinkedModelSerializer):
-
-    unit_type = UnitTypeRelatedField(read_only=True)
-
-    class Meta:
-        model = SimOutputConnector
-        fields = (
-            'id',
-            'description',
-            'name',
-            'parent',
-            'unit_type',
-            'additive_write')
-
-
-class OutputSerializer(serializers.HyperlinkedModelSerializer):
-
-    unit_type = UnitTypeRelatedField(read_only=True)
-    inputs = SimOutputConnectorSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Output
-        fields = (
-            'id',
-            'description',
-            'name',
-            'sim',
-            'unit_type',
-            'attributes',
-            'minimum',
-            'inputs',
-            'deliver_date',
-            'display_pos_x',
-            'display_pos_y')
-
-
 class SimulationSerializer(serializers.HyperlinkedModelSerializer):
 
     unittypes = UnitTypeSerializer(many=True, read_only=True)
     attributes = AttributeSerializer(many=True, read_only=True)
     entities = EntitySerializer(many=True, read_only=True)
-    outputs = OutputSerializer(many=True, read_only=True)
     scenarios = ScenarioSerializer(many=True, read_only=True)
 
     class Meta:
@@ -311,6 +276,3 @@ class SimulationSerializer(serializers.HyperlinkedModelSerializer):
             'entities',
             'outputs',
             'scenarios')
-
-
-

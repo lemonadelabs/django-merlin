@@ -37,35 +37,6 @@ class Attribute(models.Model):
     value = models.CharField(max_length=30)
 
 
-class Output(SimObject):
-    sim = models.ForeignKey(
-        Simulation, on_delete=models.CASCADE, related_name='outputs')
-    attributes = ArrayField(models.CharField(max_length=128), default=[])
-    unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
-    minimum = models.FloatField(null=True)
-    deliver_date = models.DateField(null=True)
-    display_pos_x = models.FloatField(null=True)
-    display_pos_y = models.FloatField(null=True)
-
-    def __str__(self):
-        return """
-        <Output: {0}
-            id: {5}
-            sim: {1}
-            unit_type: {2}
-            minimum: {6}
-            display_pos_x: {3}
-            display_pos_y: {4}
-        """.format(
-                id(self),
-                self.sim,
-                self.unit_type,
-                self.display_pos_x,
-                self.display_pos_y,
-                self.id,
-                self.minimum)
-
-
 class Entity(SimObject):
     sim = models.ForeignKey(
         Simulation, on_delete=models.CASCADE, related_name='entities')
@@ -73,6 +44,7 @@ class Entity(SimObject):
     parent = models.ForeignKey(
         'self', null=True, on_delete=models.CASCADE, related_name='children')
     is_source = models.BooleanField(default=False)
+    is_output = models.BooleanField(default=False)
     display_pos_x = models.FloatField(null=True)
     display_pos_y = models.FloatField(null=True)
 
@@ -119,8 +91,6 @@ class OutputConnector(Connector):
 
 
 class InputConnector(Connector):
-    source = models.ForeignKey(
-        OutputConnector, null=True, on_delete=models.SET_NULL)
     additive_write = models.BooleanField(default=False)
     parent = models.ForeignKey(
         Entity, on_delete=models.CASCADE, related_name='inputs')
@@ -142,39 +112,12 @@ class InputConnector(Connector):
             self.name)
 
 
-class SimOutputConnector(SimObject):
-    source = models.ForeignKey(
-        OutputConnector, null=True, on_delete=models.SET_NULL)
-    additive_write = models.BooleanField(default=False)
-    unit_type = models.ForeignKey(UnitType, on_delete=models.PROTECT)
-    parent = models.ForeignKey(
-        Output, on_delete=models.CASCADE, related_name='inputs')
-
-    def __str__(self):
-        return """
-        <SimOutputConnector: {0}
-            id: {1}
-            name: {5}
-            unit_type: {2}
-            parent: {3}
-            source: {4}
-        """.format(
-            id(self),
-            self.id,
-            self.unit_type.value,
-            self.parent,
-            self.source,
-            self.name)
-
-
 class Endpoint(SimObject):
     parent = models.ForeignKey(
         OutputConnector, on_delete=models.CASCADE, related_name='endpoints')
     bias = models.FloatField(default=0.0)
     input = models.ForeignKey(
-        InputConnector, null=True, on_delete=models.CASCADE)
-    sim_output = models.ForeignKey(
-        SimOutputConnector, null=True, on_delete=models.CASCADE)
+        InputConnector, null=True, on_delete=models.CASCADE, related_name='sources')
 
     def __str__(self):
         return """

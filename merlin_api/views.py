@@ -107,20 +107,6 @@ class AttributeViewSet(viewsets.ModelViewSet):
     serializer_class = AttributeSerializer
 
 
-class OutputViewSet(viewsets.ModelViewSet):
-    queryset = Output.objects.all()
-    serializer_class = OutputSerializer
-
-    def get_queryset(self):
-        queryset = self.queryset
-        # parse attribute filters
-        if 'a' in self.request.query_params:
-            attrs = self.request.query_params.copy().pop('a')
-            queryset = queryset.filter(attributes__contains=attrs)
-
-        return queryset
-
-
 class EntityViewSet(viewsets.ModelViewSet):
     queryset = Entity.objects.all()
     serializer_class = EntitySerializer
@@ -143,11 +129,6 @@ class OutputConnectorViewSet(viewsets.ModelViewSet):
 class InputConnectorViewSet(viewsets.ModelViewSet):
     queryset = InputConnector.objects.all()
     serializer_class = InputConnectorSerializer
-
-
-class SimOutputConnectorViewSet(viewsets.ModelViewSet):
-    queryset = SimOutputConnector.objects.all()
-    serializer_class = SimOutputConnectorSerializer
 
 
 class EndpointViewSet(viewsets.ModelViewSet):
