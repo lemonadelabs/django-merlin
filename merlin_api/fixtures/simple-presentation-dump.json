@@ -1,0 +1,2423 @@
+[
+{
+  "model": "merlin_api.simulation",
+  "pk": 1,
+  "fields": {
+    "name": "245833748302800427706504259221067866368",
+    "description": "",
+    "num_steps": 1,
+    "start_date": "2016-07-01"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 1,
+  "fields": {
+    "sim": 1,
+    "value": "workspace#"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 2,
+  "fields": {
+    "sim": 1,
+    "value": "appl#"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 3,
+  "fields": {
+    "sim": 1,
+    "value": "opsurplus$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 4,
+  "fields": {
+    "sim": 1,
+    "value": "accommodationExpense$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 5,
+  "fields": {
+    "sim": 1,
+    "value": "staffExpense$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 6,
+  "fields": {
+    "sim": 1,
+    "value": "rent$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 7,
+  "fields": {
+    "sim": 1,
+    "value": "surplus$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 8,
+  "fields": {
+    "sim": 1,
+    "value": "revenue$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 9,
+  "fields": {
+    "sim": 1,
+    "value": "LS_work_hr"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 10,
+  "fields": {
+    "sim": 1,
+    "value": "ITexpense$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 11,
+  "fields": {
+    "sim": 1,
+    "value": "desktop#"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 12,
+  "fields": {
+    "sim": 1,
+    "value": "staff$"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 13,
+  "fields": {
+    "sim": 1,
+    "value": "OH_work_hr"
+  }
+},
+{
+  "model": "merlin_api.unittype",
+  "pk": 14,
+  "fields": {
+    "sim": 1,
+    "value": "other$"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 1,
+  "fields": {
+    "sim": 1,
+    "value": "service"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 2,
+  "fields": {
+    "sim": 1,
+    "value": "asset"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 3,
+  "fields": {
+    "sim": 1,
+    "value": "resource"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 4,
+  "fields": {
+    "sim": 1,
+    "value": "external capability"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 5,
+  "fields": {
+    "sim": 1,
+    "value": "branch"
+  }
+},
+{
+  "model": "merlin_api.attribute",
+  "pk": 6,
+  "fields": {
+    "sim": 1,
+    "value": "budget"
+  }
+},
+{
+  "model": "merlin_api.output",
+  "pk": 1,
+  "fields": {
+    "name": "Applications Processed",
+    "description": null,
+    "sim": 1,
+    "attributes": "[]",
+    "unit_type": 2,
+    "minimum": 60000.0,
+    "deliver_date": null,
+    "display_pos_x": 1369.0,
+    "display_pos_y": 436.0
+  }
+},
+{
+  "model": "merlin_api.output",
+  "pk": 2,
+  "fields": {
+    "name": "Service Revenue",
+    "description": null,
+    "sim": 1,
+    "attributes": "[]",
+    "unit_type": 8,
+    "minimum": null,
+    "deliver_date": null,
+    "display_pos_x": 1367.0,
+    "display_pos_y": 580.0
+  }
+},
+{
+  "model": "merlin_api.output",
+  "pk": 3,
+  "fields": {
+    "name": "Operational Surplus",
+    "description": null,
+    "sim": 1,
+    "attributes": "[]",
+    "unit_type": 3,
+    "minimum": null,
+    "deliver_date": null,
+    "display_pos_x": 1375.0,
+    "display_pos_y": 295.0
+  }
+},
+{
+  "model": "merlin_api.output",
+  "pk": 4,
+  "fields": {
+    "name": "Budgetary Surplus",
+    "description": null,
+    "sim": 1,
+    "attributes": "[]",
+    "unit_type": 7,
+    "minimum": null,
+    "deliver_date": null,
+    "display_pos_x": 1374.0,
+    "display_pos_y": 140.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 1,
+  "fields": {
+    "name": "Budgeted \u2013 Staff Expenses",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"budget\"]",
+    "parent": 5,
+    "is_source": true,
+    "display_pos_x": 49.0,
+    "display_pos_y": 604.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 2,
+  "fields": {
+    "name": "Budgeted \u2013 Other Expenses",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"budget\"]",
+    "parent": 5,
+    "is_source": true,
+    "display_pos_x": 46.0,
+    "display_pos_y": 78.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 3,
+  "fields": {
+    "name": "Registration Service",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"asset\"]",
+    "parent": 5,
+    "is_source": false,
+    "display_pos_x": 1136.0,
+    "display_pos_y": 88.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 4,
+  "fields": {
+    "name": "Staff",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"resource\"]",
+    "parent": 5,
+    "is_source": false,
+    "display_pos_x": 467.0,
+    "display_pos_y": 78.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 5,
+  "fields": {
+    "name": "Registration Service using DaaS",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"service\"]",
+    "parent": 9,
+    "is_source": false,
+    "display_pos_x": 353.0,
+    "display_pos_y": 865.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 6,
+  "fields": {
+    "name": "External Desktop Service",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"external capability\"]",
+    "parent": 5,
+    "is_source": false,
+    "display_pos_x": 904.0,
+    "display_pos_y": 74.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 7,
+  "fields": {
+    "name": "Budgeted \u2013 Rent Expenses",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"budget\"]",
+    "parent": 5,
+    "is_source": true,
+    "display_pos_x": 47.0,
+    "display_pos_y": 347.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 8,
+  "fields": {
+    "name": "Staff Accommodation",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"resource\"]",
+    "parent": 5,
+    "is_source": false,
+    "display_pos_x": 266.0,
+    "display_pos_y": 215.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 9,
+  "fields": {
+    "name": "Registration Services Branch",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"branch\"]",
+    "parent": null,
+    "is_source": false,
+    "display_pos_x": 151.0,
+    "display_pos_y": 872.0
+  }
+},
+{
+  "model": "merlin_api.entity",
+  "pk": 10,
+  "fields": {
+    "name": "In-house Desktop Service",
+    "description": null,
+    "sim": 1,
+    "attributes": "[\"asset\"]",
+    "parent": 5,
+    "is_source": false,
+    "display_pos_x": 697.0,
+    "display_pos_y": 78.0
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 1,
+  "fields": {
+    "name": "staff$_output",
+    "description": "$",
+    "unit_type": 12,
+    "parent": 1,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 2,
+  "fields": {
+    "name": "other$_output",
+    "description": "$",
+    "unit_type": 14,
+    "parent": 2,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 3,
+  "fields": {
+    "name": "opsurplus$_output",
+    "description": "Operational Surplus",
+    "unit_type": 3,
+    "parent": 3,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 4,
+  "fields": {
+    "name": "revenue$_output",
+    "description": "Service Revenue",
+    "unit_type": 8,
+    "parent": 3,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 5,
+  "fields": {
+    "name": "appl#_output",
+    "description": "Applications Processed",
+    "unit_type": 2,
+    "parent": 3,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 6,
+  "fields": {
+    "name": "staffExpense$_output",
+    "description": "Staff Expenses",
+    "unit_type": 5,
+    "parent": 4,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 7,
+  "fields": {
+    "name": "OH_work_hr_output",
+    "description": "Overhead work hrs",
+    "unit_type": 13,
+    "parent": 4,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 8,
+  "fields": {
+    "name": "surplus$_output",
+    "description": "Budgetary Surplus",
+    "unit_type": 7,
+    "parent": 4,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 9,
+  "fields": {
+    "name": "LS_work_hr_output",
+    "description": "Line staff work hrs",
+    "unit_type": 9,
+    "parent": 4,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 10,
+  "fields": {
+    "name": "OH_work_hr_output",
+    "description": "remaining OH work hours",
+    "unit_type": 13,
+    "parent": 6,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 11,
+  "fields": {
+    "name": "ITexpense$_output",
+    "description": "IT expenses",
+    "unit_type": 10,
+    "parent": 6,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 12,
+  "fields": {
+    "name": "surplus$_output",
+    "description": "budget_surplus",
+    "unit_type": 7,
+    "parent": 6,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 13,
+  "fields": {
+    "name": "desktop#_output",
+    "description": "desktops provided",
+    "unit_type": 11,
+    "parent": 6,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 14,
+  "fields": {
+    "name": "rent$_output",
+    "description": "$",
+    "unit_type": 6,
+    "parent": 7,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 15,
+  "fields": {
+    "name": "accommodationExpense$_output",
+    "description": "rent expenses",
+    "unit_type": 4,
+    "parent": 8,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 16,
+  "fields": {
+    "name": "surplus$_output",
+    "description": "budgetary surplus",
+    "unit_type": 7,
+    "parent": 8,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 17,
+  "fields": {
+    "name": "workspace#_output",
+    "description": "staff accommodated",
+    "unit_type": 1,
+    "parent": 8,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 18,
+  "fields": {
+    "name": "ITexpense$_output",
+    "description": "IT expenses",
+    "unit_type": 10,
+    "parent": 10,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 19,
+  "fields": {
+    "name": "desktop#_output",
+    "description": "desktops provided",
+    "unit_type": 11,
+    "parent": 10,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 20,
+  "fields": {
+    "name": "LS_work_hr_output",
+    "description": "remaining line staff work hrs",
+    "unit_type": 9,
+    "parent": 10,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.outputconnector",
+  "pk": 21,
+  "fields": {
+    "name": "surplus$_output",
+    "description": "budgetary surplus",
+    "unit_type": 7,
+    "parent": 10,
+    "apportion_rule": 2
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 1,
+  "fields": {
+    "name": "accommodationExpense$_input",
+    "description": "Accommodation Expenses",
+    "unit_type": 4,
+    "source": 15,
+    "additive_write": false,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 2,
+  "fields": {
+    "name": "desktop#_input",
+    "description": "desktops provided",
+    "unit_type": 11,
+    "source": 13,
+    "additive_write": false,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 3,
+  "fields": {
+    "name": "staffExpense$_input",
+    "description": "Staff Expenses",
+    "unit_type": 5,
+    "source": 6,
+    "additive_write": false,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 4,
+  "fields": {
+    "name": "LS_work_hr_input",
+    "description": "line staff work hours",
+    "unit_type": 9,
+    "source": 20,
+    "additive_write": false,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 5,
+  "fields": {
+    "name": "ITexpense$_input",
+    "description": "IT Expenses",
+    "unit_type": 10,
+    "source": 11,
+    "additive_write": false,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 6,
+  "fields": {
+    "name": "workspace#_input",
+    "description": "Workplaces Available",
+    "unit_type": 1,
+    "source": 17,
+    "additive_write": false,
+    "parent": 4
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 7,
+  "fields": {
+    "name": "staff$_input",
+    "description": "Staff Budget",
+    "unit_type": 12,
+    "source": 1,
+    "additive_write": false,
+    "parent": 4
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 8,
+  "fields": {
+    "name": "OH_work_hr_input",
+    "description": "overhead_staff_work_hr",
+    "unit_type": 13,
+    "source": 7,
+    "additive_write": false,
+    "parent": 6
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 9,
+  "fields": {
+    "name": "surplus$_input",
+    "description": "contract_budget",
+    "unit_type": 7,
+    "source": 21,
+    "additive_write": false,
+    "parent": 6
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 10,
+  "fields": {
+    "name": "desktop#_input",
+    "description": "desktops from other providers",
+    "unit_type": 11,
+    "source": 19,
+    "additive_write": false,
+    "parent": 6
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 11,
+  "fields": {
+    "name": "ITexpense$_input",
+    "description": "IT expenses other providers",
+    "unit_type": 10,
+    "source": 18,
+    "additive_write": false,
+    "parent": 6
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 12,
+  "fields": {
+    "name": "rent$_input",
+    "description": "rent expenses",
+    "unit_type": 6,
+    "source": 14,
+    "additive_write": false,
+    "parent": 8
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 13,
+  "fields": {
+    "name": "other$_input",
+    "description": "IT budget",
+    "unit_type": 14,
+    "source": 2,
+    "additive_write": false,
+    "parent": 10
+  }
+},
+{
+  "model": "merlin_api.inputconnector",
+  "pk": 14,
+  "fields": {
+    "name": "LS_work_hr_input",
+    "description": "line staff work hrs",
+    "unit_type": 9,
+    "source": 9,
+    "additive_write": false,
+    "parent": 10
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 1,
+  "fields": {
+    "name": "appl#_input_from_205551903226907860351871001550633762366",
+    "description": "",
+    "source": 5,
+    "additive_write": false,
+    "unit_type": 2,
+    "parent": 1
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 2,
+  "fields": {
+    "name": "revenue$_input_from_205551903226907860351871001550633762366",
+    "description": "",
+    "source": 4,
+    "additive_write": false,
+    "unit_type": 8,
+    "parent": 2
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 3,
+  "fields": {
+    "name": "opsurplus$_input_from_205551903226907860351871001550633762366",
+    "description": "",
+    "source": 3,
+    "additive_write": false,
+    "unit_type": 3,
+    "parent": 3
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 4,
+  "fields": {
+    "name": "surplus$_input_from_157613639215851911383969412536631002032",
+    "description": "",
+    "source": 16,
+    "additive_write": false,
+    "unit_type": 7,
+    "parent": 4
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 5,
+  "fields": {
+    "name": "surplus$_input_from_270270201293556676590323532948333201632",
+    "description": "",
+    "source": 12,
+    "additive_write": false,
+    "unit_type": 7,
+    "parent": 4
+  }
+},
+{
+  "model": "merlin_api.simoutputconnector",
+  "pk": 6,
+  "fields": {
+    "name": "surplus$_input_from_4453657874827313910254101074818945363",
+    "description": "",
+    "source": 8,
+    "additive_write": false,
+    "unit_type": 7,
+    "parent": 4
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 1,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 1,
+    "bias": 1.0,
+    "input": 7,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 2,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 2,
+    "bias": 1.0,
+    "input": 13,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 3,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 3,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 3
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 4,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 4,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 2
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 5,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 5,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 1
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 6,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 6,
+    "bias": 1.0,
+    "input": 3,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 7,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 7,
+    "bias": 1.0,
+    "input": 8,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 8,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 8,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 6
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 9,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 9,
+    "bias": 1.0,
+    "input": 14,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 10,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 11,
+    "bias": 1.0,
+    "input": 5,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 11,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 12,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 5
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 12,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 13,
+    "bias": 1.0,
+    "input": 2,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 13,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 14,
+    "bias": 1.0,
+    "input": 12,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 14,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 15,
+    "bias": 1.0,
+    "input": 1,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 15,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 16,
+    "bias": 1.0,
+    "input": null,
+    "sim_output": 4
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 16,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 17,
+    "bias": 1.0,
+    "input": 6,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 17,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 18,
+    "bias": 1.0,
+    "input": 11,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 18,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 19,
+    "bias": 1.0,
+    "input": 10,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 19,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 20,
+    "bias": 1.0,
+    "input": 4,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.endpoint",
+  "pk": 20,
+  "fields": {
+    "name": "",
+    "description": "",
+    "parent": 21,
+    "bias": 1.0,
+    "input": 9,
+    "sim_output": null
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 1,
+  "fields": {
+    "name": "staff budget",
+    "description": "",
+    "parent": 1,
+    "priority": 100,
+    "process_class": "pymerlin.processes.BudgetProcess",
+    "parameters": {
+      "name": "staff budget",
+      "budget_type": "staff$",
+      "start_amount": 73000000.0
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 2,
+  "fields": {
+    "name": "other budget",
+    "description": "",
+    "parent": 2,
+    "priority": 100,
+    "process_class": "pymerlin.processes.BudgetProcess",
+    "parameters": {
+      "name": "other budget",
+      "budget_type": "other$",
+      "start_amount": 800000.0
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 3,
+  "fields": {
+    "name": "registration facility process",
+    "description": "",
+    "parent": 3,
+    "priority": 100,
+    "process_class": "examples.DIAServicesModel.RegistrationServiceProcess",
+    "parameters": {
+      "name": "registration facility process",
+      "default_registration_fee": 85.0,
+      "default_applications_submitted": 1000000.0,
+      "default_applications_processed_per_lswork_hr": 10
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 4,
+  "fields": {
+    "name": "line staff resource process",
+    "description": "",
+    "parent": 4,
+    "priority": 100,
+    "process_class": "examples.DIAServicesModel.StaffProcess",
+    "parameters": {
+      "name": "line staff resource process",
+      "default_oh_staff_no": 10,
+      "default_span_of_control": 12,
+      "default_hours_per_week": 40.0,
+      "default_admin_training_percent": 20,
+      "default_avg_line_salary": 60000.0,
+      "default_avg_oh_salary": 75000.0,
+      "default_line_staff_no": 100,
+      "default_leave_percent": 20,
+      "default_hours_training": 2400
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 5,
+  "fields": {
+    "name": "Desktop Contract",
+    "description": "",
+    "parent": 6,
+    "priority": 100,
+    "process_class": "examples.DIAServicesModel.ICTDesktopContract",
+    "parameters": {
+      "base_contract_costs": 0,
+      "contract_ohwork_hr": 0,
+      "min_contract_no": 0,
+      "contract_duration": 6,
+      "actual_desktops": 0,
+      "cost_per_extra_desktop": 0
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 6,
+  "fields": {
+    "name": "rent budget",
+    "description": "",
+    "parent": 7,
+    "priority": 100,
+    "process_class": "pymerlin.processes.BudgetProcess",
+    "parameters": {
+      "name": "rent budget",
+      "budget_type": "rent$",
+      "start_amount": 18000000.0
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 7,
+  "fields": {
+    "name": "staff accommodation",
+    "description": "",
+    "parent": 8,
+    "priority": 100,
+    "process_class": "examples.DIAServicesModel.StaffAccommodationProcess",
+    "parameters": {
+      "name": "staff accommodation",
+      "default_area_m2": 1650,
+      "default_lease_term": 5,
+      "default_cost_m2": 400,
+      "default_area_per_staff_m2": 15.0
+    }
+  }
+},
+{
+  "model": "merlin_api.process",
+  "pk": 8,
+  "fields": {
+    "name": "Internal ICT Desktop Service",
+    "description": "",
+    "parent": 10,
+    "priority": 100,
+    "process_class": "examples.DIAServicesModel.InternalICTDesktopService",
+    "parameters": {
+      "it_hrs_per_desktop": 40.0,
+      "maint_cost_per_desktop": 400.0,
+      "life_time": 6,
+      "acq_cost_per_desktop": 4000.0,
+      "actual_desktops": 110,
+      "depr_period": 4,
+      "financial_charge_percent": 8
+    }
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 1,
+  "fields": {
+    "name": "annual amount",
+    "description": "",
+    "process": 1,
+    "property_type": 2,
+    "default_value": 73000000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 73000000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 2,
+  "fields": {
+    "name": "annual amount",
+    "description": "",
+    "process": 2,
+    "property_type": 2,
+    "default_value": 800000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 800000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 3,
+  "fields": {
+    "name": "Registration Fee / $",
+    "description": "",
+    "process": 3,
+    "property_type": 2,
+    "default_value": 85.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 85.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 4,
+  "fields": {
+    "name": "Applications Processed / LS work_hr",
+    "description": "",
+    "process": 3,
+    "property_type": 2,
+    "default_value": 10.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 10.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 5,
+  "fields": {
+    "name": "Applications Submitted Per Year",
+    "description": "",
+    "process": 3,
+    "property_type": 2,
+    "default_value": 1000000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 1000000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 6,
+  "fields": {
+    "name": "admin & training [%]",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 20.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 20.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 7,
+  "fields": {
+    "name": "overhead staff #",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 10.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 10.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 8,
+  "fields": {
+    "name": "working hours per week",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 40.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 40.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 9,
+  "fields": {
+    "name": "span of control",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 12.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 12.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 10,
+  "fields": {
+    "name": "avg annual line salary",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 60000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 60000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 11,
+  "fields": {
+    "name": "annual leave [%]",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 20.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 20.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 12,
+  "fields": {
+    "name": "line staff #",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 100.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 100.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 13,
+  "fields": {
+    "name": "hours of training period",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 2400.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 2400.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 14,
+  "fields": {
+    "name": "avg annual overhead salary",
+    "description": "",
+    "process": 4,
+    "property_type": 2,
+    "default_value": 75000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 75000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 15,
+  "fields": {
+    "name": "Cost / extra Desktop",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 0.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 0.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 16,
+  "fields": {
+    "name": "min desktops contracted",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 0.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 0.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 17,
+  "fields": {
+    "name": "Contract Management OH hours",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 0.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 0.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 18,
+  "fields": {
+    "name": "annual base contract costs",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 0.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 0.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 19,
+  "fields": {
+    "name": "contract duration/yrs",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 6.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 6.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 20,
+  "fields": {
+    "name": "actual desktops",
+    "description": "",
+    "process": 5,
+    "property_type": 2,
+    "default_value": 0.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 0.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 21,
+  "fields": {
+    "name": "annual amount",
+    "description": "",
+    "process": 6,
+    "property_type": 2,
+    "default_value": 18000000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 18000000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 22,
+  "fields": {
+    "name": "annual cost[$]/area [m\u00b2]",
+    "description": "",
+    "process": 7,
+    "property_type": 2,
+    "default_value": 400.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 400.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 23,
+  "fields": {
+    "name": "area [m\u00b2]/staff",
+    "description": "",
+    "process": 7,
+    "property_type": 2,
+    "default_value": 15.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 15.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 24,
+  "fields": {
+    "name": "lease term [yr]",
+    "description": "",
+    "process": 7,
+    "property_type": 2,
+    "default_value": 5.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 5.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 25,
+  "fields": {
+    "name": "area [m\u00b2]",
+    "description": "",
+    "process": 7,
+    "property_type": 2,
+    "default_value": 1650.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 1650.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 26,
+  "fields": {
+    "name": "Desktop Lifetime [yrs]",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 6.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 6.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 27,
+  "fields": {
+    "name": "Annual Maintenance Cost / Desktop",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 400.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 400.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 28,
+  "fields": {
+    "name": "Financial Charge %",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 8.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 8.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 29,
+  "fields": {
+    "name": "Acquisition Costs / Desktop",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 4000.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 4000.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 30,
+  "fields": {
+    "name": "Annual Support Hours Per Desktop",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 40.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 40.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 31,
+  "fields": {
+    "name": "depreciation Period [yrs]",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 4.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 4.0
+  }
+},
+{
+  "model": "merlin_api.processproperty",
+  "pk": 32,
+  "fields": {
+    "name": "Actual Desktops",
+    "description": "",
+    "process": 8,
+    "property_type": 2,
+    "default_value": 110.0,
+    "max_value": null,
+    "min_value": null,
+    "readonly": false,
+    "property_value": 110.0
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 1,
+  "fields": {
+    "name": "baseline",
+    "description": "",
+    "sim": 1,
+    "start_offset": 0
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 2,
+  "fields": {
+    "name": "haircut",
+    "description": "",
+    "sim": 1,
+    "start_offset": 0
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 3,
+  "fields": {
+    "name": "Desktop Outsourcing, Phase 1",
+    "description": "",
+    "sim": 1,
+    "start_offset": 0
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 4,
+  "fields": {
+    "name": "Desktop Outsourcing, Phase 2",
+    "description": "",
+    "sim": 1,
+    "start_offset": 15
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 5,
+  "fields": {
+    "name": "Desktop Outsourcing, Phase 3",
+    "description": "",
+    "sim": 1,
+    "start_offset": 27
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 6,
+  "fields": {
+    "name": "Preserving the Nations Memory, Implement",
+    "description": "",
+    "sim": 1,
+    "start_offset": 12
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 7,
+  "fields": {
+    "name": "Intelligence Investigation System, Implement",
+    "description": "",
+    "sim": 1,
+    "start_offset": 12
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 8,
+  "fields": {
+    "name": "TSSD, Implement",
+    "description": "",
+    "sim": 1,
+    "start_offset": 3
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 9,
+  "fields": {
+    "name": "Workplace, Roll Out",
+    "description": "",
+    "sim": 1,
+    "start_offset": 9
+  }
+},
+{
+  "model": "merlin_api.scenario",
+  "pk": 10,
+  "fields": {
+    "name": "Delegation Training, Training workshop",
+    "description": "",
+    "sim": 1,
+    "start_offset": 6
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 1,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 3,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 2,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 5,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 3,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 4,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 4,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 3,
+    "time": 7,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            6
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            20,
+            30
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 5,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 5,
+    "time": 10,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            6
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            20,
+            50
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 6,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 4,
+    "time": 10,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            6
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            20,
+            30
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 7,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 2,
+    "time": 1,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            1
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            1,
+            0
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            7
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            21,
+            0
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            2
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            2,
+            0
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 8,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 6,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 9,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 6,
+    "time": 10,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 10,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 7,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 11,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 7,
+    "time": 7,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 12,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 8,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 13,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 8,
+    "time": 7,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 14,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 9,
+    "time": 1,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 15,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 9,
+    "time": 13,
+    "actions": []
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 16,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 1,
+    "time": 1,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            12,
+            89
+          ],
+          "type": "Property",
+          "props": null
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 17,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 10,
+    "time": 1,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            7,
+            -3
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.event",
+  "pk": 18,
+  "fields": {
+    "name": "",
+    "description": "",
+    "scenario": 10,
+    "time": 10,
+    "actions": [
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            7,
+            3
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      },
+      {
+        "operand_1": {
+          "params": [
+            4
+          ],
+          "type": "Entity",
+          "props": null
+        },
+        "op": ":=",
+        "operand_2": {
+          "params": [
+            9,
+            13
+          ],
+          "type": "Property",
+          "props": {
+            "additive": true
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 1,
+  "fields": {
+    "name": "Desktop Outsourcing",
+    "description": "description",
+    "priority": 1,
+    "type": "transform",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 2,
+  "fields": {
+    "name": "Preserving the Nations Memory",
+    "description": "description",
+    "priority": 1,
+    "type": "run",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 3,
+  "fields": {
+    "name": "Intelligence Investigation System",
+    "description": "description",
+    "priority": 1,
+    "type": "run",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 4,
+  "fields": {
+    "name": "TSSD",
+    "description": "description",
+    "priority": 1,
+    "type": "run",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 5,
+  "fields": {
+    "name": "Workplace",
+    "description": "description",
+    "priority": 1,
+    "type": "run",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.project",
+  "pk": 6,
+  "fields": {
+    "name": "Delegation Training",
+    "description": "Make it so that delegation is easier to do",
+    "priority": 1,
+    "type": "transform",
+    "is_ringfenced": false,
+    "achievability": 5,
+    "attractiveness": 5,
+    "dependencies": []
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 1,
+  "fields": {
+    "name": "Phase 1",
+    "description": "description",
+    "project": 1,
+    "scenario": 3,
+    "investment_cost": 0,
+    "service_cost": 50000,
+    "start_date": "2016-07-01",
+    "end_date": "2016-12-31",
+    "is_active": true,
+    "capitalization": 0.0
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 2,
+  "fields": {
+    "name": "Phase 3",
+    "description": "description",
+    "project": 1,
+    "scenario": 5,
+    "investment_cost": 0,
+    "service_cost": 50000,
+    "start_date": "2018-10-01",
+    "end_date": "2019-06-30",
+    "is_active": true,
+    "capitalization": 0.0
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 3,
+  "fields": {
+    "name": "Phase 2",
+    "description": "description",
+    "project": 1,
+    "scenario": 4,
+    "investment_cost": 0,
+    "service_cost": 50000,
+    "start_date": "2017-10-01",
+    "end_date": "2018-06-30",
+    "is_active": true,
+    "capitalization": 0.0
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 4,
+  "fields": {
+    "name": "Implement",
+    "description": "description",
+    "project": 2,
+    "scenario": 6,
+    "investment_cost": 20000000,
+    "service_cost": 800000,
+    "start_date": "2017-07-01",
+    "end_date": "2018-03-31",
+    "is_active": true,
+    "capitalization": 0.7
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 5,
+  "fields": {
+    "name": "Implement",
+    "description": "description",
+    "project": 3,
+    "scenario": 7,
+    "investment_cost": 30000000,
+    "service_cost": 1000000,
+    "start_date": "2017-07-01",
+    "end_date": "2017-12-31",
+    "is_active": true,
+    "capitalization": 0.9
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 6,
+  "fields": {
+    "name": "Implement",
+    "description": "description",
+    "project": 4,
+    "scenario": 8,
+    "investment_cost": 12000000,
+    "service_cost": 5000000,
+    "start_date": "2016-10-01",
+    "end_date": "2017-03-31",
+    "is_active": true,
+    "capitalization": 0.6
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 7,
+  "fields": {
+    "name": "Roll Out",
+    "description": "description",
+    "project": 5,
+    "scenario": 9,
+    "investment_cost": 10000000,
+    "service_cost": 3000000,
+    "start_date": "2017-04-01",
+    "end_date": "2018-03-31",
+    "is_active": true,
+    "capitalization": 0.9
+  }
+},
+{
+  "model": "merlin_api.projectphase",
+  "pk": 8,
+  "fields": {
+    "name": "Training workshop",
+    "description": "description",
+    "project": 6,
+    "scenario": 10,
+    "investment_cost": 5000,
+    "service_cost": 50000,
+    "start_date": "2016-07-01",
+    "end_date": "2017-03-31",
+    "is_active": true,
+    "capitalization": 0.0
+  }
+}
+]
