@@ -138,17 +138,6 @@ class PymerlinRunTest(TestCase):
         for i in range(0, len(expected_result)):
             self.assertAlmostEqual(result[i], expected_result[i])
 
-    def test_input_requirement_exception(self):
-        ccs = self.sim.get_process_by_name('Call Center Staff')
-        salary_prop = ccs.get_prop('staff salary')
-        salary_prop.set_value(1000.00)
-        self.sim.run()
-        errors = self.sim.get_last_run_errors()
-        first = errors[0]
-        self.assertEqual(len(errors), 10)
-        self.assertEqual(first.process, ccs)
-        self.assertEqual(first.process_input, ccs.inputs['$'])
-
 
 class Pymerlin2DjangoTestCase(TestCase):
 
