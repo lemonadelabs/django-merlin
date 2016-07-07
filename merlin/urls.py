@@ -39,6 +39,11 @@ router.register(
     r'simulation-run',
     views.SimulationRunViewSet,
     base_name='simulation-run')
+router.register(
+    r'optimize-phase',
+    views.OptimizePhaseViewSet,
+    base_name='optimize-phase'
+)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),

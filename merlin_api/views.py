@@ -69,6 +69,19 @@ class SimulationRunViewSet(viewsets.GenericViewSet):
         return Response(result)
 
 
+class OptimizePhaseViewSet(viewsets.GenericViewSet):
+    """
+    Requests an optimal position for the supplied phase
+    """
+    queryset = ProjectPhase.objects.all()
+    serializer_class = ProjectPhaseSerializer
+
+    def retrieve(self, request, pk=None):
+        phase = get_object_or_404(self.get_queryset(), pk=pk)
+        result = pymerlin_adapter.optimise_project_phase(phase)
+        return Response(result)
+
+
 # Model view sets
 
 

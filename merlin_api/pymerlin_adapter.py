@@ -4,6 +4,9 @@ from typing import MutableSequence, Mapping, Any, List
 from pymerlin.processes import *
 from merlin_api import models
 from merlin_api.models import Simulation
+from computations.suggestions.utilities import *
+from computations.suggestions.context import pareto_context
+from computations.suggestions.algorithm import pareto
 
 logger = logging.getLogger('merlin_api.pymerlin_adapter')
 
@@ -482,5 +485,81 @@ def pymerlin2django(sim: merlin.Simulation) -> int:
         for ok in output_names.keys():
             output_con_map[ok].description = ','.join(output_names[ok])
             output_con_map[ok].save()
-
     return dsim.id
+
+
+def optimise_project_phase(phase: models.ProjectPhase):
+    # get phase
+    context = pareto_context()
+    _create_pareto_context_from_django(context, phase.scenario.sim.id)
+    alg = pareto(context)
+    result = alg.optimize(phase.project.id, phase.id)
+    return result
+
+
+def _create_pareto_context_from_django(context, theSimulation_id):
+    """
+    this method pulls together all data from the database
+
+    The project and phase ids for the optimization task are
+    specified somewhere else.
+    """
+
+    # this essentially comes from the start of the plan view
+    # and now from the simulation object of the database
+    context.first_tick_start = models.Simulation.objects.get(
+        pk=theSimulation_id).start_date
+    context.timelineStart = context.first_tick_start
+
+    queryset = models.Simulation.objects.prefetch_related(
+        "entities", "outputs",
+        "outputs__inputs",
+        "unittypes", "attributes",
+        "entities__parent",
+        "entities__children",
+        "entities__outputs",
+        "entities__outputs__unit_type",
+        "entities__outputs__endpoints",
+        "entities__outputs__endpoints__input",
+        "entities__outputs__endpoints__sim_output",
+        "entities__inputs",
+        "entities__inputs__unit_type",
+        "entities__inputs__source",
+        "entities__processes",
+        "entities__processes__properties")
+
+    context.msim = django2pymerlin(queryset.get(pk=theSimulation_id))
+    # convert all scenarios
+    # collect data and be simulation specific
+    queryset = models.Scenario.objects
+    allScenarios = {s for s in queryset.filter(sim__id=theSimulation_id)}
+
+    # Scenario.name
+    # baseline -> everything added in the services view
+    # haircut -> everything added from haircut view
+    # all others are (hopefully) project related
+    context.mscen = [django_scenario2pymerlin(s, context.msim)
+                  for s in allScenarios if s.name != "haircut"]
+
+    # collect all projects, phases, scenarios from DB
+    context.allProjects = []
+    for p in models.Project.objects.all():
+        theProject = project(id=p.id, phases=[], name=p.name)
+
+        for ph in p.phases.all():
+            theProject.phases.append(projectphase(
+                # is it possible to have a project referring to
+                # different simulations?
+                scenario_id=(ph.scenario.id
+                             if ph.scenario.sim.id == theSimulation_id
+                             else None),
+                start_date=ph.start_date,
+                end_date=ph.end_date,
+                id=ph.id,
+                name=ph.name,
+                is_active=ph.is_active,
+                investment_cost=ph.investment_cost,
+                service_cost=ph.service_cost,
+                capitalization_ratio=ph.capitalization
+            ))
+        context.allProjects.append(theProject)
