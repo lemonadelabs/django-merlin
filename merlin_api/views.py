@@ -77,10 +77,14 @@ class OptimizePhaseViewSet(viewsets.GenericViewSet):
     serializer_class = ProjectPhaseSerializer
 
     def retrieve(self, request, pk=None):
-        phase = get_object_or_404(self.get_queryset(), pk=pk)
+        phase = get_object_or_404(self.get_queryset(), pk=pk) #  type: ProjectPhase
         result = pymerlin_adapter.optimise_project_phase(phase)
-        return Response(result)
-
+        for r in result:
+            if r.id == phase.id:
+                phase.start_date = r.start_date
+                phase.end_date = r.end_date
+        ps = ProjectPhaseSerializer(instance=phase)
+        return Response(ps.data)
 
 # Model view sets
 
