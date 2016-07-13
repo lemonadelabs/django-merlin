@@ -539,7 +539,7 @@ def _create_pareto_context_from_django(context, theSimulation_id):
     # haircut -> everything added from haircut view
     # all others are (hopefully) project related
     context.mscen = [django_scenario2pymerlin(s, context.msim)
-                  for s in allScenarios if s.name != "haircut"]
+                     for s in allScenarios]
 
     # collect all projects, phases, scenarios from DB
     context.allProjects = []
